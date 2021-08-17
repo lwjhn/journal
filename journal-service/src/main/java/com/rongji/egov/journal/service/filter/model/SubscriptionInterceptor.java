@@ -12,8 +12,9 @@ public class SubscriptionInterceptor extends GenericFormNormalInterceptor {
         super(managers);
     }
 
+    @Override
     public AclBaseQueryHandler<?, ?> resolve(AclBaseQueryHandler<?, ?> aclBaseQueryHandler, WebServiceProperties webServiceProperties) {
         return aclBaseQueryHandler instanceof DacUpdateQuerier
-                ? super.resolve((DacUpdateQuerier) aclBaseQueryHandler, webServiceProperties) : aclBaseQueryHandler;
+                ? super.resolve(aclBaseQueryHandler, webServiceProperties) : aclBaseQueryHandler;
     }
 }
