@@ -1,0 +1,29 @@
+include:
+  - project: 'MicroService/ci-template'
+    file: '/.gitlab-ci-module-be-template.yml'
+
+variables:
+  # 用户名
+  SSH_USERNAME: rjsoft
+  # 密码
+  SSH_PASSWORD: rjsoft
+  # 主机
+  SSH_HOST: 192.168.210.129
+  # 端口
+  SSH_PORT: 22
+  # 运行模块
+  RUNNING_MODULE: journal-service
+  # 项目模块名称
+  MODULE_NAME: journal
+  # 接收地址
+  PROJECT_PATH: /data/oa-fjszf
+  # 运行端口
+  RUNNING_PORT: 3900
+  # 运行激活
+  ACTIVE_PROFILE: test
+  # JVM选项
+  JVM_OPTIONS: -Xmx200m -Xms150m
+  # 只有该命名空间下才会构建，用户名或者组名
+  ONLY_NAMESPACE: 2020-/fjszf-419/intranet
+  # 只有该分支的提交才会构建
+  ONLY_REF: master

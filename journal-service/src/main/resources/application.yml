@@ -1,0 +1,137 @@
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: journal
+  jackson:
+    time-zone: GMT+8
+  #    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    stream:
+      binders:
+        rabbit:
+          type: rabbit
+      bindings:
+        request-enum:
+          destination: request.enum
+          binder: rabbit
+          group: ${spring.application.name}
+        receive-enum:
+          destination: receive.enum
+          binder: rabbit
+  rabbitmq:
+    host: 192.168.0.40
+    port: 5672
+    username: guest
+    password: guest
+  zipkin:
+    sender:
+      type: rabbit
+    sleuth:
+      web:
+        client:
+          enabled: true
+      sampler:
+        probability: 0.5
+  cache:
+    type: redis
+    #mongoDb:存mongoDb ; dataBase: 存数据库
+    fileStorageType: mongoDb
+feign:
+  client:
+    config:
+      feignName:
+        connectTimeout: 60000
+        readTimeout: 60000
+ribbon:
+  ReadTimeout: 60000
+  SocketTimeout: 60000
+  ServerListRefreshInterval: 5000 # ribbon拉取服务时间间隔
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    metadata-map:
+      displayName: 报刊征订(journal)
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.210.129:2001/eureka/ #SZF
+server:
+  max-http-header-size: 256KB
+rongji:
+  module:
+    journal:
+      managers:
+        - journal_manager
+        - sys_manager
+---
+spring:
+  profiles: dev
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.oscar.Driver
+    url: jdbc:oscar://192.168.210.134:2003/OSRDB
+    username: FJSZF
+    password: FJSZF
+  redis:
+    host: 192.168.210.134
+    database: 16
+    port: 6379
+eureka:
+  instance:
+    metadata-map:
+      appProvider: true
+      #      private: true
+      zone: lwjhn-dev # 区域名 随便起一个，不要直接在这复制
+      invisible: DIFF_ZONE # 不同区域间的服务不可见（仅本区域可见）
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+mybatis:
+  configuration:
+    database-id: shentong
+logging:
+  level:
+    com.rongji.egov: debug
+server:
+  port: 3686
+---
+spring:
+  profiles: test
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.oscar.Driver
+    url: jdbc:oscar://192.168.210.134:2003/OSRDB
+    username: FJSZF
+    password: FJSZF
+  redis:
+    host: 192.168.210.134
+    database: 16
+    port: 6379
+eureka:
+  instance:
+    metadata-map:
+      appProvider: true
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+mybatis:
+  configuration:
+    database-id: shentong
+logging:
+  level:
+    com.rongji.egov: debug
+server:
+  port: 3689
