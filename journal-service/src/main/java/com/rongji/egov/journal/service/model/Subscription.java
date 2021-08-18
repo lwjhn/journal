@@ -6,7 +6,7 @@ import com.rongji.egov.mybatis.base.annotation.*;
 import java.util.Date;
 
 @SuppressWarnings("unused")
-@Table(value = "EGOV_JOURNAL_PAPER", dac = true, mapping = Mapping.UNDERSCORE)
+@Table(value = "EGOV_JOURNAL_SUBSCRIPTION", dac = true, mapping = Mapping.UNDERSCORE)
 public class Subscription extends GenericForm {
     private String rssType;
 

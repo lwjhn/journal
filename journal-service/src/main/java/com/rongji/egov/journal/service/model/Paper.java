@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-@Table(value = "EGOV_JOURNAL_SUBSCRIPTION", dac = true, mapping = Mapping.UNDERSCORE)
+@Table(value = "EGOV_JOURNAL_PAPER", dac = true, mapping = Mapping.UNDERSCORE)
 public class Paper extends GenericForm {
     private String publication;
 
@@ -49,8 +49,6 @@ public class Paper extends GenericForm {
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
-
-    private boolean enable;
 
     public String getPublication() {
         return publication;
@@ -202,13 +200,5 @@ public class Paper extends GenericForm {
 
     public void setReaders(Set<String> readers) {
         this.readers = readers;
-    }
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
     }
 }
