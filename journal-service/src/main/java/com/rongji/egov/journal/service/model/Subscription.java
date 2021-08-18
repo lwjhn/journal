@@ -8,7 +8,7 @@ import java.util.Date;
 @SuppressWarnings("unused")
 @Table(value = "EGOV_JOURNAL_SUBSCRIPTION", dac = true, mapping = Mapping.UNDERSCORE)
 public class Subscription extends GenericForm {
-    private String rssType;
+    private boolean govExpense;
 
     private String publication;
 
@@ -51,12 +51,12 @@ public class Subscription extends GenericForm {
 
     private Date verifyTime;
 
-    public String getRssType() {
-        return rssType;
+    public boolean isGovExpense() {
+        return govExpense;
     }
 
-    public void setRssType(String rssType) {
-        this.rssType = rssType;
+    public void setGovExpense(boolean govExpense) {
+        this.govExpense = govExpense;
     }
 
     public String getPublication() {

@@ -9,25 +9,25 @@
 ```sql
 CREATE TABLE EGOV_JOURNAL_PAPER
 (
-    ID              CHAR(32)                  NOT NULL,
-    SORT_NO         INT         DEFAULT 0,              --排序号
-    PUBLICATION     VARCHAR(256)              NOT NULL, --报刊名称
-    POSTAL_DIS_CODE VARCHAR(100)              NOT NULL, --邮发代号
-    JOURNAL         VARCHAR(32)               NOT NULL, --报纸/期刊
-    LANG            VARCHAR(32)               NOT NULL, --语言，默认中文
-    PAPER_TYPE      VARCHAR(100),                       --类型
-    PERIODICAL      VARCHAR(32)               NOT NULL, --刊期：周刊、季刊、半年刊、月刊、年刊
-    UNIT_PRICE      DECIMAL(10, 2)            NOT NULL, --价格
-    YEAR_PRICE      DECIMAL(10, 2)            NOT NULL, --年价
-    DELIVERY_METHOD VARCHAR(100)              NOT NULL, --订阅路径：默认 邮发
-    BARCODE         VARCHAR(100),                       --条码号
-    PRESS           VARCHAR(128),                       --出版社
-    PHONE           VARCHAR(128),                       --联系电话
-    PRESS_ADDRESS   VARCHAR(258),                       --出版社地址
-    PROGRAMA        VARCHAR(128),                       --栏目
-    PRESENTATION    VARCHAR(512),                       --介绍
-    GOV_EXPENSE     VARCHAR(32) DEFAULT FALSE NOT NULL, --公费刊物
-    IS_VALID        boolean     DEFAULT TRUE  NOT NULL, --是否有效
+    ID              CHAR(32)              NOT NULL,
+    SORT_NO         INT     DEFAULT 0,              --排序号
+    PUBLICATION     VARCHAR(256)          NOT NULL, --报刊名称
+    POSTAL_DIS_CODE VARCHAR(100)          NOT NULL, --邮发代号
+    JOURNAL         VARCHAR(32)           NOT NULL, --报纸/期刊
+    LANG            VARCHAR(32)           NOT NULL, --语言，默认中文
+    PAPER_TYPE      VARCHAR(100),                   --类型
+    PERIODICAL      VARCHAR(32)           NOT NULL, --刊期：周刊、季刊、半年刊、月刊、年刊
+    UNIT_PRICE      DECIMAL(10, 2)        NOT NULL, --价格
+    YEAR_PRICE      DECIMAL(10, 2)        NOT NULL, --年价
+    DELIVERY_METHOD VARCHAR(100)          NOT NULL, --订阅路径：默认 邮发
+    BARCODE         VARCHAR(100),                   --条码号
+    PRESS           VARCHAR(128),                   --出版社
+    PHONE           VARCHAR(128),                   --联系电话
+    PRESS_ADDRESS   VARCHAR(258),                   --出版社地址
+    PROGRAMA        VARCHAR(128),                   --栏目
+    PRESENTATION    VARCHAR(512),                   --介绍
+    GOV_EXPENSE     boolean DEFAULT FALSE NOT NULL, --公费刊物
+    IS_VALID        boolean DEFAULT TRUE  NOT NULL, --是否有效
 
     DRAFT_USER      VARCHAR(64),
     DRAFT_USER_NO   VARCHAR(16),
@@ -36,8 +36,8 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     SYSTEM_NO       VARCHAR(64),
     CREATE_TIME     TIMESTAMP,
     UPDATE_TIME     TIMESTAMP,
-    MANAGERS        CLOB,                               --管理员，群组或角色
-    READERS         VARCHAR(64),                        --["*"] 所有人可见
+    MANAGERS        CLOB,                           --管理员，群组或角色
+    READERS         VARCHAR(64),                    --["*"] 所有人可见
     CONSTRAINT CONS1342192229 PRIMARY KEY (ID)
 )
 ```
@@ -49,7 +49,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
 CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 (
     ID                    CHAR(32)              NOT NULL,
-    RSS_TYPE              VARCHAR(32),                    --订阅类型：自费，公费
+    GOV_EXPENSE           BOOLEAN DEFAULT TRUE  NOT NULL, --订阅类型：自费，公费
     PUBLICATION           VARCHAR(256)          NOT NULL, --报刊名称
     POSTAL_DIS_CODE       VARCHAR(100)          NOT NULL, --邮发代号
     SUBSCRIBE_USER        VARCHAR(64),                    --订阅人
