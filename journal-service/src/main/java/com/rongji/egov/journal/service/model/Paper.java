@@ -50,6 +50,8 @@ public class Paper extends GenericForm {
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
 
+    private boolean enable;
+
     public String getPublication() {
         return publication;
     }
@@ -200,5 +202,13 @@ public class Paper extends GenericForm {
 
     public void setReaders(Set<String> readers) {
         this.readers = readers;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

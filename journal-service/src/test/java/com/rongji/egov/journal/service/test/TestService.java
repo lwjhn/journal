@@ -1,11 +1,8 @@
 package com.rongji.egov.journal.service.test;
 
 import com.alibaba.fastjson.JSON;
-import com.rongji.egov.journal.service.model.Paper;
-import com.rongji.egov.journal.service.model.Subscription;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
-import com.rongji.egov.mybatis.base.utils.ModelUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
