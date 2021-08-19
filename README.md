@@ -86,10 +86,13 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 
 ### ACL角色及管理
 
-#### 报刊管理员
+#### 管理员配置
 
-    报刊管理员：`newspaper_manager`
-
-#### 系统管理员
-
-    系统管理员：`sys_manager`
+```yaml
+rongji:
+  module:
+    journal:
+      managers:
+        - journal_manager
+        - sys_manager
+```
