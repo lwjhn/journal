@@ -36,7 +36,7 @@ public class GenericFormNormalInterceptor implements NormalInterceptor {
     @SuppressWarnings("unchecked")
     public AclBaseQueryHandler<?, ?> action(DacUpdateQuerier updateQuerier, WebServiceProperties webServiceProperties) {
         SQLHandler sqlHandler = updateQuerier.getSqlHandler();
-        if (sqlHandler instanceof SQLInserter && ModelUtils.isSubclass(updateQuerier.getClass(), GenericForm.class)) {
+        if (sqlHandler instanceof SQLInserter && ModelUtils.isSubclass(sqlHandler.getModel(), GenericForm.class)) {
             BiConsumer<GenericFormFilter, Map<String, Object>, RjAcl> handle = switcher.get(sqlHandler.getClass());
             if (handle != null) {
                 handle.accept(genericFormFilter, (Map<String, Object>) ((SQLInserter) sqlHandler).getValues(), (RjAcl) updateQuerier.getAcl());
@@ -56,7 +56,7 @@ public class GenericFormNormalInterceptor implements NormalInterceptor {
     public Object response(Object result, AclBaseQueryHandler<?, ?> handle, WebServiceProperties webServiceProperties) {
         if (handle instanceof DacUpdateQuerier) {
             SQLHandler sqlHandler = handle.getSqlHandler();
-            if (sqlHandler.getClass() == SQLInserter.class && ModelUtils.isSubclass(sqlHandler.getClass(), GenericForm.class) && ((int) result) == 1) {
+            if (sqlHandler.getClass() == SQLInserter.class && ModelUtils.isSubclass(sqlHandler.getModel(), GenericForm.class) && ((int) result) == 1) {
                 return ((Map<String, Object>) ((SQLInserter) sqlHandler).getValues()).get(LambdaHelper.fieldName(GenericForm::getId));
             }
         }

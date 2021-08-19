@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PaperInterceptor extends GenericFormNormalInterceptor {
-    private final static Set<String> ACL_PUB = new HashSet<String>() {{
+    private final static Set<String> readers = new HashSet<String>(){{
         add(RjAcl.FULL_ACCESS_NO);
     }};
 
     public PaperInterceptor(HashSet<String> managers) {
         super(managers);
-        this.genericFormFilter.getInserts().put(LambdaHelper.fieldName(Paper::getReaders), rjAcl -> ACL_PUB);
+        this.genericFormFilter.getInserts().put(LambdaHelper.fieldName(Paper::getReaders), o -> readers);
     }
 }

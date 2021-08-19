@@ -32,7 +32,7 @@ public class GenericFormFilter {
 
     public void fillInsertsValues(Map<String, Object> values, RjAcl acl) {
         fillFixedValues(values, inserts.entrySet(), acl);
-        fillUpdatesValues(values, acl);
+        fillFixedValues(values, updates.entrySet(), acl);
     }
 
     public void fillUpdatesValues(Map<String, Object> values, RjAcl acl) {
