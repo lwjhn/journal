@@ -31,4 +31,11 @@ public class DefaultNormalInterceptor implements NormalInterceptor {
         return interceptor == null ? aclBaseQueryHandler
                 : interceptor.resolve(aclBaseQueryHandler, webServiceProperties);
     }
+
+    @Override
+    public Object response(Object result, AclBaseQueryHandler<?, ?> handle, WebServiceProperties webServiceProperties) {
+        NormalInterceptor interceptor = proxy.get(handle.getSqlHandler().getModel());
+        return interceptor == null ? handle
+                : interceptor.response(result, handle, webServiceProperties);
+    }
 }

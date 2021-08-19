@@ -50,4 +50,16 @@ public class GenericFormNormalInterceptor implements NormalInterceptor {
         return aclBaseQueryHandler instanceof DacUpdateQuerier
                 ? action((DacUpdateQuerier) aclBaseQueryHandler, webServiceProperties) : aclBaseQueryHandler;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object response(Object result, AclBaseQueryHandler<?, ?> handle, WebServiceProperties webServiceProperties) {
+        if (handle instanceof DacUpdateQuerier) {
+            SQLHandler sqlHandler = handle.getSqlHandler();
+            if (sqlHandler.getClass() == SQLInserter.class && ModelUtils.isSubclass(sqlHandler.getClass(), GenericForm.class) && ((int) result) == 1) {
+                return ((Map<String, Object>) ((SQLInserter) sqlHandler).getValues()).get(LambdaHelper.fieldName(GenericForm::getId));
+            }
+        }
+        return result;
+    }
 }
