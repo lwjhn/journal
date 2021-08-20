@@ -36,6 +36,6 @@ public class DefaultAclLoaderFilter implements AclLoaderFilter {
     private void process(Collection<String> collection, Pattern pattern) {
         if (SQLVerifier.requireEmpty(collection))
             return;
-        collection.removeIf(s -> managers == null ? !pattern.matcher(s).matches() : managers.contains(s));
+        collection.removeIf(s -> managers == null ? !pattern.matcher(s).matches() : !managers.contains(s));
     }
 }
