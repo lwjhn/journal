@@ -12,13 +12,13 @@ variables:
   # 端口
   SSH_PORT: 22
   # 运行模块
-  RUNNING_MODULE: journal-service
+  RUNNING_MODULE: fjszf-journal-service
   # 项目模块名称
-  MODULE_NAME: journal-service
+  MODULE_NAME: journal
   # 接收地址
   PROJECT_PATH: /data/oa-fjszf
   # 运行端口
-  RUNNING_PORT: 3900
+  RUNNING_PORT: 3950
   # 运行激活
   ACTIVE_PROFILE: test
   # JVM选项
