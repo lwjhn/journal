@@ -1,4 +1,4 @@
-# fjszf-journal-newspaper
+# fjszf-journal
 
 报刊征订
 
