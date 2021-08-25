@@ -1,7 +1,9 @@
 package com.rongji.egov.journal.service.filter;
 
+import com.rongji.egov.journal.service.filter.model.OrderInterceptor;
 import com.rongji.egov.journal.service.filter.model.PaperInterceptor;
 import com.rongji.egov.journal.service.filter.model.SubscriptionInterceptor;
+import com.rongji.egov.journal.service.model.Order;
 import com.rongji.egov.journal.service.model.Paper;
 import com.rongji.egov.journal.service.model.Subscription;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
@@ -23,6 +25,7 @@ public class DefaultNormalInterceptor implements NormalInterceptor {
         HashSet<String> managers = properties == null ? null : properties.managers;
         proxy.put(Paper.class, new PaperInterceptor(managers));
         proxy.put(Subscription.class, new SubscriptionInterceptor(managers));
+        proxy.put(Order.class, new OrderInterceptor(managers));
     }
 
     @Override

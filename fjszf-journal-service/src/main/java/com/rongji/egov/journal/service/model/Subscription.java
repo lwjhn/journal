@@ -10,10 +10,6 @@ import java.util.Date;
 public class Subscription extends GenericForm {
     private boolean govExpense;
 
-    private String publication;
-
-    private String postalDisCode;
-
     private String subscribeUser;
 
     @Editor(ACL.USER)
@@ -29,8 +25,6 @@ public class Subscription extends GenericForm {
     private Integer subscribeMonthBegin;
 
     private Integer subscribeMonthEnd;
-
-    private Integer subscribeCopies;
 
     private String clearingForm;
 
@@ -57,22 +51,6 @@ public class Subscription extends GenericForm {
 
     public void setGovExpense(boolean govExpense) {
         this.govExpense = govExpense;
-    }
-
-    public String getPublication() {
-        return publication;
-    }
-
-    public void setPublication(String publication) {
-        this.publication = publication;
-    }
-
-    public String getPostalDisCode() {
-        return postalDisCode;
-    }
-
-    public void setPostalDisCode(String postalDisCode) {
-        this.postalDisCode = postalDisCode;
     }
 
     public String getSubscribeUser() {
@@ -129,14 +107,6 @@ public class Subscription extends GenericForm {
 
     public void setSubscribeMonthEnd(Integer subscribeMonthEnd) {
         this.subscribeMonthEnd = subscribeMonthEnd;
-    }
-
-    public Integer getSubscribeCopies() {
-        return subscribeCopies;
-    }
-
-    public void setSubscribeCopies(Integer subscribeCopies) {
-        this.subscribeCopies = subscribeCopies;
     }
 
     public String getClearingForm() {

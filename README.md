@@ -28,6 +28,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     PRESENTATION    VARCHAR(512),                   --介绍
     GOV_EXPENSE     boolean DEFAULT FALSE NOT NULL, --公费刊物
     IS_VALID        boolean DEFAULT TRUE  NOT NULL, --是否有效
+    READERS         VARCHAR(64),                    --["*"] 所有人可见
 
     DRAFT_USER      VARCHAR(64),
     DRAFT_USER_NO   VARCHAR(16),
@@ -37,12 +38,13 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     CREATE_TIME     TIMESTAMP,
     UPDATE_TIME     TIMESTAMP,
     MANAGERS        CLOB,                           --管理员，群组或角色
-    READERS         VARCHAR(64),                    --["*"] 所有人可见
     CONSTRAINT CONS1342192229 PRIMARY KEY (ID)
 )
 ```
 
 #### 报刊订阅表
+
+##### 主表
 
 ```sql
 -- DROP TABLE EGOV_NEWSPAPER_RSS;
@@ -50,8 +52,6 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 (
     ID                    CHAR(32)              NOT NULL,
     GOV_EXPENSE           BOOLEAN DEFAULT TRUE  NOT NULL, --订阅类型：自费，公费
-    PUBLICATION           VARCHAR(256)          NOT NULL, --报刊名称
-    POSTAL_DIS_CODE       VARCHAR(100)          NOT NULL, --邮发代号
     SUBSCRIBE_USER        VARCHAR(64),                    --订阅人
     SUBSCRIBE_USER_NO     VARCHAR(16),
     SUBSCRIBE_ORG         VARCHAR(64),                    --订阅处室
@@ -59,7 +59,6 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
     SUBSCRIBE_YEAR        INT,                            --订阅年份
     SUBSCRIBE_MONTH_BEGIN INT     DEFAULT 1,              --起始月订期
     SUBSCRIBE_MONTH_END   INT     DEFAULT 12,             --截至月订期
-    SUBSCRIBE_COPIES      INT,                            --订阅份数
     SUBSCRIBE_TIME        TIMESTAMP,                      --订阅时间
     CLEARING_FORM         VARCHAR(64),--结算方式：现金或赠送，默认现金
 
@@ -83,6 +82,37 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
     CONSTRAINT CONS13421464262 PRIMARY KEY (ID)
 )
 ```
+
+##### 刊物信息子表
+
+```sql
+-- Drop table
+-- DROP TABLE FJSZF.EGOV_JOURNAL_ORDER;
+CREATE TABLE EGOV_JOURNAL_ORDER
+(
+    PID              char(32)       NOT NULL, --外键
+    ID               char(32)       NOT NULL, --ID
+    PAPER_ID varchar(32) NOT NULL,  --关联刊物信息及价格
+    SUBSCRIBE_COPIES int            NOT NULL, --订阅份数
+    SORT_NO          INT DEFAULT 0,           --排序号
+    READERS          VARCHAR(64),             --["*"] 所有人可见
+
+    DRAFT_USER       VARCHAR(64),
+    DRAFT_USER_NO    VARCHAR(16),
+    DRAFT_ORG        VARCHAR(64),
+    DRAFT_ORG_NO     VARCHAR(16),
+    SYSTEM_NO        VARCHAR(64),
+    CREATE_TIME      TIMESTAMP,
+    UPDATE_TIME      TIMESTAMP,
+    MANAGERS         CLOB,                    --管理员，群组或角色
+
+    CONSTRAINT CONS13429642362 PRIMARY KEY (ID),
+    CONSTRAINT EGOV_JOURNAL_ORDER_FK_PID FOREIGN KEY (PID) REFERENCES EGOV_JOURNAL_SUBSCRIPTION (ID) ON DELETE CASCADE,
+    CONSTRAINT EGOV_JOURNAL_ORDER_FK_PAPER_ID FOREIGN KEY (PAPER_ID) REFERENCES EGOV_JOURNAL_PAPER(ID)
+)
+```
+![img.png](img.png)
+
 
 ### ACL角色及管理
 
