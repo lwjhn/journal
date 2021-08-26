@@ -1,6 +1,6 @@
 package com.rongji.egov.journal.service.model;
 
-import com.rongji.egov.journal.service.base.filler.GenericFormFilter;
+import com.rongji.egov.journal.service.base.model.GenericForm;
 import com.rongji.egov.mybatis.base.annotation.*;
 import com.rongji.egov.mybatis.base.wrapper.JsonTypeHandler;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 @Table(value = "EGOV_JOURNAL_ORDER", dac = true, mapping = Mapping.UNDERSCORE)
-public class Order extends GenericFormFilter {
+public class Order extends GenericForm {
     private String pid;
 
     private String paperId;

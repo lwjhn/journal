@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -27,6 +28,9 @@ public class TestService {
 
     @Test
     public void test1() {
+        for(int i=0;i<6;i++){
+            System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));
+        }
 //        SQLInserter inserter = new SQLInserter(submitReport);
 //        System.out.println(JSON.toJSONString(inserter, true));
 //

@@ -9,8 +9,8 @@
 ```sql
 CREATE TABLE EGOV_JOURNAL_PAPER
 (
-    ID              CHAR(32)              NOT NULL,
-    SORT_NO         INT     DEFAULT 0,              --排序号
+    ID              VARCHAR(32)              NOT NULL,
+    SORT_NO         INT     DEFAULT 1,              --排序号
     PUBLICATION     VARCHAR(256)          NOT NULL, --报刊名称
     POSTAL_DIS_CODE VARCHAR(100)          NOT NULL, --邮发代号
     JOURNAL         VARCHAR(32)           NOT NULL, --报纸/期刊
@@ -50,7 +50,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
 -- DROP TABLE EGOV_NEWSPAPER_RSS;
 CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 (
-    ID                    CHAR(32)              NOT NULL,
+    ID                    VARCHAR(32)              NOT NULL,
     GOV_EXPENSE           BOOLEAN DEFAULT TRUE  NOT NULL, --订阅类型：自费，公费
     SUBSCRIBE_USER        VARCHAR(64),                    --订阅人
     SUBSCRIBE_USER_NO     VARCHAR(16),
@@ -90,12 +90,12 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 -- DROP TABLE FJSZF.EGOV_JOURNAL_ORDER;
 CREATE TABLE EGOV_JOURNAL_ORDER
 (
-    PID              char(32)       NOT NULL, --外键
-    ID               char(32)       NOT NULL, --ID
-    PAPER_ID varchar(32) NOT NULL,  --关联刊物信息及价格
-    SUBSCRIBE_COPIES int            NOT NULL, --订阅份数
-    SORT_NO          INT DEFAULT 0,           --排序号
-    READERS          VARCHAR(64),             --["*"] 所有人可见
+    PID              VARCHAR(32) NOT NULL, --外键
+    ID               VARCHAR(32) NOT NULL, --ID
+    PAPER_ID         varchar(32) NOT NULL, --关联刊物信息及价格
+    SUBSCRIBE_COPIES int         NOT NULL, --订阅份数
+    SORT_NO          INT DEFAULT 1,        --排序号
+    READERS          VARCHAR(64),          --["*"] 所有人可见
 
     DRAFT_USER       VARCHAR(64),
     DRAFT_USER_NO    VARCHAR(16),
@@ -104,15 +104,15 @@ CREATE TABLE EGOV_JOURNAL_ORDER
     SYSTEM_NO        VARCHAR(64),
     CREATE_TIME      TIMESTAMP,
     UPDATE_TIME      TIMESTAMP,
-    MANAGERS         CLOB,                    --管理员，群组或角色
+    MANAGERS         CLOB,                 --管理员，群组或角色
 
     CONSTRAINT CONS13429642362 PRIMARY KEY (ID),
     CONSTRAINT EGOV_JOURNAL_ORDER_FK_PID FOREIGN KEY (PID) REFERENCES EGOV_JOURNAL_SUBSCRIPTION (ID) ON DELETE CASCADE,
-    CONSTRAINT EGOV_JOURNAL_ORDER_FK_PAPER_ID FOREIGN KEY (PAPER_ID) REFERENCES EGOV_JOURNAL_PAPER(ID)
+    CONSTRAINT EGOV_JOURNAL_ORDER_FK_PAPER_ID FOREIGN KEY (PAPER_ID) REFERENCES EGOV_JOURNAL_PAPER (ID)
 )
 ```
-![img.png](img.png)
 
+![img.png](img.png)
 
 ### ACL角色及管理
 
