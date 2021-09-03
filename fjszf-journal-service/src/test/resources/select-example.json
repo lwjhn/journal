@@ -1,0 +1,100 @@
+{
+  "fields": [
+    {
+      "expression": "subscription.id",
+      "alias": "id"
+    },
+    {
+      "expression": "order.id",
+      "alias": "order_id"
+    },
+    {
+      "expression": "LTRIM(subscribeYear) + ? + LTRIM(subscribeMonthBegin) + ? + LTRIM(subscribeMonthEnd) + ?",
+      "alias": "_DEF_COL_2",
+      "value": [
+        "年 ",
+        "月 - ",
+        "月"
+      ]
+    },
+    {
+      "expression": "subscribeOrg",
+      "alias": "_DEF_COL_3"
+    },
+    {
+      "expression": "subscribeUser",
+      "alias": "_DEF_COL_4"
+    },
+    {
+      "expression": "paper.publication",
+      "alias": "_DEF_COL_5"
+    },
+    {
+      "expression": "paper.postalDisCode",
+      "alias": "_DEF_COL_6"
+    },
+    {
+      "expression": "CASE subscription.govExpense WHEN TRUE THEN ? ELSE ? END",
+      "alias": "_DEF_COL_7",
+      "value": [
+        "公费",
+        "自费"
+      ]
+    },
+    {
+      "expression": "paper.yearPrice",
+      "alias": "_DEF_COL_8"
+    },
+    {
+      "expression": "paper.yearPrice * order.subscribeCopies",
+      "alias": "_DEF_COL_9"
+    },
+    {
+      "expression": "order.subscribeCopies",
+      "alias": "_DEF_COL_10"
+    },
+    {
+      "expression": "verifyStatus",
+      "alias": "verify_status"
+    },
+    {
+      "expression": "subscription.updateTime",
+      "alias": "update_time"
+    }
+  ],
+  "order": [
+    "update_time DESC"
+  ],
+  "limit": [
+    0,
+    15
+  ],
+  "tableAlias": "subscription",
+  "model": "com.rongji.egov.journal.service.model.Subscription",
+  "join": [
+    {
+      "type": "LEFT",
+      "model": "com.rongji.egov.journal.service.model.Order",
+      "tableAlias": "order",
+      "on": {
+        "expression": "subscription.id = order.pid"
+      },
+      "join": [
+        {
+          "type": "LEFT",
+          "model": "com.rongji.egov.journal.service.model.Paper",
+          "tableAlias": "paper",
+          "on": {
+            "expression": "order.paperId = paper.id"
+          }
+        }
+      ]
+    }
+  ],
+  "where": {
+    "expression": "(verifyStatus = ?)",
+    "value": [
+      "2"
+    ]
+  }
+}

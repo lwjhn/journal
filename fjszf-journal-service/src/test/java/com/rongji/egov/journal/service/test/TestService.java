@@ -1,14 +1,26 @@
 package com.rongji.egov.journal.service.test;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
+import com.rongji.egov.mybatis.base.querier.SelectListQuerier;
+import com.rongji.egov.mybatis.base.sql.SQLSelector;
+import com.rongji.egov.mybatis.base.utils.AutoCloseableBase;
+import com.rongji.egov.mybatis.base.wrapper.HashCamelMap;
+import com.rongji.egov.mybatis.dac.handler.Acl;
+import com.rongji.egov.mybatis.dac.querier.DacSelectListQuerier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotEmpty;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -27,63 +39,72 @@ public class TestService {
     }
 
     @Test
-    public void test1() {
-        for(int i=0;i<6;i++){
-            System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));
+    public void test3() {
+        InputStream is = null;
+        try {
+            is = TestService.class.getClassLoader().getResourceAsStream("select-example.json");
+            assert is != null;
+            SQLSelector selector = JSONObject.parseObject(is, SQLSelector.class);
+            List<HashCamelMap> result = baseMapper.select(
+                    new DacSelectListQuerier<HashCamelMap>().setAcl(getAcl()).setResultMap(HashCamelMap.class).setSqlHandler(selector)
+            );
+            System.out.println(JSON.toJSONString(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            AutoCloseableBase.close(is);
         }
-//        SQLInserter inserter = new SQLInserter(submitReport);
-//        System.out.println(JSON.toJSONString(inserter, true));
-//
-//        System.out.println(baseMapper.update((new UpdateQuerier()).setSqlHandler(inserter)));
     }
 
     @Test
     public void test4() {
-//        String id = "T3-1628779339612";
-//
-//        SQLUpdater updater = new SQLUpdater(submitReport, new SQLCriteria("id = ?", new ArrayList<Object>() {{
-//            add(id);
-//        }}));
-//        System.out.println(JSON.toJSONString(updater, true));
-//
-//        System.out.println(baseMapper.update(new UpdateQuerier().setSqlHandler(updater)));
+        InputStream is = null;
+        try {
+            is = TestService.class.getClassLoader().getResourceAsStream("select-example.json");
+            assert is != null;
+            SQLSelector selector = JSONObject.parseObject(is, SQLSelector.class);
+            List<HashCamelMap> result = baseMapper.select(
+                    new SelectListQuerier<HashCamelMap>().setResultMap(HashCamelMap.class).setSqlHandler(selector)
+            );
+            System.out.println(JSON.toJSONString(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            AutoCloseableBase.close(is);
+        }
     }
 
-    @Test
-    public void testDelete() {
-//        String id = "T3-1628779339612";
-//        SQLDeleter handle = new SQLDeleter(SubmitReport.class, new SQLCriteria("id LIKE ?", id));
-//        System.out.println(JSON.toJSONString(handle, true));
-//        System.out.println(baseMapper.update(new UpdateQuerier().setSqlHandler(handle)));
-    }
+    Acl getAcl() {
+        return (new Acl() {
+            @Override
+            public @NotEmpty String getUserNo() {
+                return "U000007";
+            }
 
-    @Test
-    public void test3() {
-//        SQLSelector selector = new SQLSelector(
-//                new SQLCriteria("subject LIKE ?", "%测试%"), SubmitReport.class);
-//        selector.setLimit(0, 6);
-//        selector.setFields(SQLWrapper.getSqlFields(SubmitReport.class, true));
-//
-//        Page<HashCamelMap> test = baseMapper.select(new SelectSimpleQuerier<Page<HashCamelMap>>() {
-//        }.setSqlHandler(selector));
-//
-//        Page<HashCamelMap> reportHashCamelMap = baseMapper.select(
-//                new SelectPageQuerier<HashCamelMap>().setResultMap(HashCamelMap.class).setSqlHandler(selector));
-//
-//        selector.setFields(SQLWrapper.getSqlFields(SubmitReport.class));
-//        Page<SubmitReport> reportPage = baseMapper.select(
-//                new SelectPageQuerier<SubmitReport>()
-//                        .setResultMap(SubmitReport.class).setSqlHandler(selector));
-//
-//        List<SubmitReport> reports = baseMapper.select(
-//                new SelectListQuerier<SubmitReport>()
-//                        .setResultMap(SubmitReport.class).setSqlHandler(selector));
-//        FlowReaderList flowReaderList = reports.get(0).getTodoReader();
-//
-//        selector.setLimit(0, 1);
-//        SubmitReport report = baseMapper.select(
-//                new SelectOneQuerier<SubmitReport>()
-//                        .setResultMap(SubmitReport.class).setSqlHandler(selector));
-//        System.out.println(JSON.toJSONString(test));
+            @Override
+            public Collection<String> getOrgNoList() {
+                return new ArrayList<String>() {{
+                    add("D00001");
+                    add("D00005");
+                    add("D00024");
+                }};
+            }
+
+            @Override
+            public Collection<String> getRoleNoList() {
+                return new ArrayList<String>() {{
+                    add("sys_manager");
+                    add("D00005_csfzr");
+                }};
+            }
+
+            @Override
+            public Collection<String> getGroupNoList() {
+                return new ArrayList<String>() {{
+                    add("D00003_csgly");
+                    add("D00005_csfzr");
+                }};
+            }
+        });
     }
 }
