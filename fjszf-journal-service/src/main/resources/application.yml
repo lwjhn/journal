@@ -89,9 +89,10 @@ spring:
     username: FJSZF
     password: FJSZF
   redis:
-    host: 192.168.210.134
-    database: 16
+    host: 192.168.210.153
+    database: 0
     port: 6379
+    password: 4A027FD3C83E1451482582DE000A9A88
 eureka:
   instance:
     metadata-map:
@@ -119,8 +120,8 @@ spring:
     username: FJSZF
     password: FJSZF
   redis:
-    host: 192.168.210.134
-    database: 16
+    host: 192.168.210.78
+    database: 15
     port: 6379
 eureka:
   instance:
