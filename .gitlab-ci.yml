@@ -1,6 +1,7 @@
 include:
   - project: 'MicroService/ci-template'
-    file: '/.gitlab-ci-module-be-template.yml'
+#    file: '/.gitlab-ci-module-be-template.yml'
+    file: '/.gitlab-ci-module-be-join-template.yml'
 
 variables:
   # 用户名
