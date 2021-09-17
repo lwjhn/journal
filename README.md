@@ -28,6 +28,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     PRESENTATION    VARCHAR(512),                   --介绍
     GOV_EXPENSE     boolean DEFAULT FALSE NOT NULL, --公费刊物
     IS_VALID        boolean DEFAULT TRUE  NOT NULL, --是否有效
+    REQUISITE       boolean DEFAULT FALSE  NOT NULL, --是否必订阅刊物
     READERS         VARCHAR(64),                    --["*"] 所有人可见
 
     DRAFT_USER      VARCHAR(64),
@@ -54,8 +55,8 @@ CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
     GOV_EXPENSE           BOOLEAN DEFAULT TRUE  NOT NULL, --订阅类型：自费，公费
     SUBSCRIBE_USER        VARCHAR(64),                    --订阅人
     SUBSCRIBE_USER_NO     VARCHAR(16),
-    SUBSCRIBE_ORG         VARCHAR(64),                    --订阅处室
-    SUBSCRIBE_ORG_NO      VARCHAR(16),
+    SUBSCRIBE_ORG         VARCHAR(64)  NOT NULL,          --订阅处室
+    SUBSCRIBE_ORG_NO      VARCHAR(16)  NOT NULL,
     SUBSCRIBE_YEAR        INT,                            --订阅年份
     SUBSCRIBE_MONTH_BEGIN INT     DEFAULT 1,              --起始月订期
     SUBSCRIBE_MONTH_END   INT     DEFAULT 12,             --截至月订期
@@ -125,4 +126,11 @@ rongji:
       managers:
         - journal_manager
         - sys_manager
+```
+
+### 更新
+#### 2021-09-17
+##### 表 EGOV_JOURNAL_PAPER 增加字段
+```sql
+ALTER TABLE EGOV_JOURNAL_PAPER ADD REQUISITE boolean DEFAULT FALSE NOT NULL;
 ```

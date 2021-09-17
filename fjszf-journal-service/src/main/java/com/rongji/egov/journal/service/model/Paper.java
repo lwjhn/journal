@@ -5,6 +5,7 @@ import com.rongji.egov.mybatis.base.annotation.*;
 import com.rongji.egov.mybatis.base.wrapper.JsonTypeHandler;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -18,7 +19,8 @@ public class Paper extends GenericForm {
 
     private String lang;
 
-    private String paperType;
+    @TypeHandler(JsonTypeHandler.class)
+    private List<String> paperType;
 
     private String periodical;
 
@@ -82,11 +84,11 @@ public class Paper extends GenericForm {
         this.lang = lang;
     }
 
-    public String getPaperType() {
+    public List<String> getPaperType() {
         return paperType;
     }
 
-    public void setPaperType(String paperType) {
+    public void setPaperType(List<String> paperType) {
         this.paperType = paperType;
     }
 
