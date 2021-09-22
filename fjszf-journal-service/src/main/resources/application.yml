@@ -120,8 +120,8 @@ spring:
     username: FJSZF
     password: FJSZF
   redis:
-    host: 192.168.210.134
-    database: 16
+    host: 192.168.210.129
+    database: 15
     port: 6379
 eureka:
   instance:
