@@ -45,8 +45,6 @@ public class Subscription extends GenericForm {
 
     private Date verifyTime;
 
-    private Boolean requisite;
-
     public boolean isGovExpense() {
         return govExpense;
     }
@@ -181,13 +179,5 @@ public class Subscription extends GenericForm {
 
     public void setVerifyTime(Date verifyTime) {
         this.verifyTime = verifyTime;
-    }
-
-    public Boolean getRequisite() {
-        return requisite;
-    }
-
-    public void setRequisite(Boolean requisite) {
-        this.requisite = requisite;
     }
 }

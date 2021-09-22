@@ -48,6 +48,8 @@ public class Paper extends GenericForm {
 
     private Integer sortNo;
 
+    private Boolean requisite;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -202,5 +204,13 @@ public class Paper extends GenericForm {
 
     public void setReaders(Set<String> readers) {
         this.readers = readers;
+    }
+
+    public Boolean getRequisite() {
+        return requisite;
+    }
+
+    public void setRequisite(Boolean requisite) {
+        this.requisite = requisite;
     }
 }
