@@ -9,7 +9,7 @@
 ```sql
 CREATE TABLE EGOV_JOURNAL_PAPER
 (
-    ID              VARCHAR(32)              NOT NULL,
+    ID              VARCHAR(32)           NOT NULL,
     SORT_NO         INT     DEFAULT 1,              --排序号
     PUBLICATION     VARCHAR(256)          NOT NULL, --报刊名称
     POSTAL_DIS_CODE VARCHAR(100)          NOT NULL, --邮发代号
@@ -28,7 +28,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     PRESENTATION    VARCHAR(512),                   --介绍
     GOV_EXPENSE     boolean DEFAULT FALSE NOT NULL, --公费刊物
     IS_VALID        boolean DEFAULT TRUE  NOT NULL, --是否有效
-    REQUISITE       boolean DEFAULT FALSE  NOT NULL, --是否必订阅刊物
+    REQUISITE       boolean DEFAULT FALSE NOT NULL, --是否必订阅刊物
     READERS         VARCHAR(64),                    --["*"] 所有人可见
 
     DRAFT_USER      VARCHAR(64),
@@ -51,12 +51,12 @@ CREATE TABLE EGOV_JOURNAL_PAPER
 -- DROP TABLE EGOV_NEWSPAPER_RSS;
 CREATE TABLE EGOV_JOURNAL_SUBSCRIPTION
 (
-    ID                    VARCHAR(32)              NOT NULL,
+    ID                    VARCHAR(32)           NOT NULL,
     GOV_EXPENSE           BOOLEAN DEFAULT TRUE  NOT NULL, --订阅类型：自费，公费
     SUBSCRIBE_USER        VARCHAR(64),                    --订阅人
     SUBSCRIBE_USER_NO     VARCHAR(16),
-    SUBSCRIBE_ORG         VARCHAR(64)  NOT NULL,          --订阅处室
-    SUBSCRIBE_ORG_NO      VARCHAR(16)  NOT NULL,
+    SUBSCRIBE_ORG         VARCHAR(64)           NOT NULL, --订阅处室
+    SUBSCRIBE_ORG_NO      VARCHAR(16)           NOT NULL,
     SUBSCRIBE_YEAR        INT,                            --订阅年份
     SUBSCRIBE_MONTH_BEGIN INT     DEFAULT 1,              --起始月订期
     SUBSCRIBE_MONTH_END   INT     DEFAULT 12,             --截至月订期
@@ -115,6 +115,33 @@ CREATE TABLE EGOV_JOURNAL_ORDER
 
 ![img.png](img.png)
 
+#### 统计打印参数配置
+
+```sql
+CREATE TABLE EGOV_JOURNAL_STAT_PRINT_CONFIG
+(
+    ID            VARCHAR(32)  NOT NULL,
+    SORT_NO       INT DEFAULT 1,         --排序号
+    COMPANY       VARCHAR(100) NOT NULL, --单位名称
+    POSTAL_CODE   VARCHAR(100),          --邮编
+    TRANSACTOR    VARCHAR(100) NOT NULL, --经办人
+    PHONE_NO      VARCHAR(100) NOT NULL, --电话
+    ADDRESS       VARCHAR(256) NOT NULL, --通信地址
+
+    READERS       VARCHAR(100),          --["*"] 所有人可见
+
+    DRAFT_USER    VARCHAR(64),
+    DRAFT_USER_NO VARCHAR(16),
+    DRAFT_ORG     VARCHAR(64),
+    DRAFT_ORG_NO  VARCHAR(16),
+    SYSTEM_NO     VARCHAR(64),
+    CREATE_TIME   TIMESTAMP,
+    UPDATE_TIME   TIMESTAMP,
+    MANAGERS      CLOB,                  --管理员，群组或角色
+    CONSTRAINT CONS1342192339 PRIMARY KEY (ID)
+)
+```
+
 ### ACL角色及管理
 
 #### 管理员配置
@@ -129,8 +156,12 @@ rongji:
 ```
 
 ### 更新
+
 #### 2021-09-17
+
 ##### 表 EGOV_JOURNAL_PAPER 增加字段
+
 ```sql
-ALTER TABLE EGOV_JOURNAL_PAPER ADD REQUISITE boolean DEFAULT FALSE NOT NULL;
+ALTER TABLE EGOV_JOURNAL_PAPER
+    ADD REQUISITE boolean DEFAULT FALSE NOT NULL;
 ```
