@@ -1,13 +1,7 @@
 package com.rongji.egov.journal.service.filter;
 
-import com.rongji.egov.journal.service.filter.model.OrderInterceptor;
-import com.rongji.egov.journal.service.filter.model.PaperInterceptor;
-import com.rongji.egov.journal.service.filter.model.StatPrintConfigInterceptor;
-import com.rongji.egov.journal.service.filter.model.SubscriptionInterceptor;
-import com.rongji.egov.journal.service.model.Order;
-import com.rongji.egov.journal.service.model.Paper;
-import com.rongji.egov.journal.service.model.StatPrintConfig;
-import com.rongji.egov.journal.service.model.Subscription;
+import com.rongji.egov.journal.service.filter.model.*;
+import com.rongji.egov.journal.service.model.*;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.dac.handler.AclBaseQueryHandler;
 import com.rongji.egov.mybatis.web.WebServiceProperties;
@@ -29,6 +23,7 @@ public class DefaultNormalInterceptor implements NormalInterceptor {
         proxy.put(Subscription.class, new SubscriptionInterceptor(managers));
         proxy.put(Order.class, new OrderInterceptor(managers));
         proxy.put(StatPrintConfig.class, new StatPrintConfigInterceptor(managers));
+        proxy.put(OrderLimit.class, new OrderLimitInterceptor(managers));
     }
 
     @Override

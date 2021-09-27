@@ -142,6 +142,35 @@ CREATE TABLE EGOV_JOURNAL_STAT_PRINT_CONFIG
 )
 ```
 
+#### 订阅限定配置
+
+```sql
+CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
+(
+    ID              VARCHAR(32)    NOT NULL,
+    SUBSCRIBE_YEAR  INT            NOT NULL,            --订阅年份
+    SUBSCRIBE_BEGIN TIMESTAMP      NOT NULL,            --起始月订期
+    SUBSCRIBE_END   TIMESTAMP      NOT NULL DEFAULT 12, --截至月订期
+
+    LIMIT_COUNT     INT            NOT NULL DEFAULT 0,  --刊数
+    LIMIT_COPIES    INT            NOT NULL DEFAULT 0,  --报数
+    LIMIT_AMOUNT    DECIMAL(10, 2) NOT NULL DEFAULT 0,  --价格
+    COMPANY         VARCHAR(100)   NOT NULL,
+
+    READERS         VARCHAR(100),                       --["*"] 所有人可见
+
+    DRAFT_USER      VARCHAR(64),
+    DRAFT_USER_NO   VARCHAR(16),
+    DRAFT_ORG       VARCHAR(64),
+    DRAFT_ORG_NO    VARCHAR(16),
+    SYSTEM_NO       VARCHAR(64),
+    CREATE_TIME     TIMESTAMP,
+    UPDATE_TIME     TIMESTAMP,
+    MANAGERS        CLOB,                               --管理员，群组或角色
+    CONSTRAINT CONS1342192349 PRIMARY KEY (ID)
+)
+```
+
 ### ACL角色及管理
 
 #### 管理员配置

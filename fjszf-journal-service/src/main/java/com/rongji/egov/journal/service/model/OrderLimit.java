@@ -1,0 +1,98 @@
+package com.rongji.egov.journal.service.model;
+
+import com.rongji.egov.journal.service.base.model.GenericForm;
+import com.rongji.egov.mybatis.base.annotation.*;
+import com.rongji.egov.mybatis.base.wrapper.JsonTypeHandler;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+@SuppressWarnings("unused")
+@Table(value = "EGOV_JOURNAL_ORDER_LIMIT", dac = true, mapping = Mapping.UNDERSCORE)
+public class OrderLimit extends GenericForm {
+    private Integer subscribeYear;
+
+    private Date subscribeBegin;
+
+    private Date subscribeEnd;
+
+    private Integer limitCount;
+
+    private Integer limitCopies;
+
+    private BigDecimal limitAmount;
+
+    private String Company;
+
+    @Reader(ACL.PUB)
+    @TypeHandler(JsonTypeHandler.class)
+    private Set<String> readers;
+
+    public Integer getSubscribeYear() {
+        return subscribeYear;
+    }
+
+    public void setSubscribeYear(Integer subscribeYear) {
+        this.subscribeYear = subscribeYear;
+    }
+
+    public Date getSubscribeBegin() {
+        return subscribeBegin;
+    }
+
+    public void setSubscribeBegin(Date subscribeBegin) {
+        this.subscribeBegin = subscribeBegin;
+    }
+
+    public Date getSubscribeEnd() {
+        return subscribeEnd;
+    }
+
+    public void setSubscribeEnd(Date subscribeEnd) {
+        this.subscribeEnd = subscribeEnd;
+    }
+
+    public Integer getLimitCount() {
+        return limitCount;
+    }
+
+    public void setLimitCount(Integer limitCount) {
+        this.limitCount = limitCount;
+    }
+
+    public Integer getLimitCopies() {
+        return limitCopies;
+    }
+
+    public void setLimitCopies(Integer limitCopies) {
+        this.limitCopies = limitCopies;
+    }
+
+    public BigDecimal getLimitAmount() {
+        return limitAmount;
+    }
+
+    public void setLimitAmount(BigDecimal limitAmount) {
+        this.limitAmount = limitAmount;
+    }
+
+    public String getCompany() {
+        return Company;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
+    }
+
+    public Set<String> getReaders() {
+        return readers;
+    }
+
+    public void setReaders(Set<String> readers) {
+        this.readers = readers;
+    }
+
+
+}
