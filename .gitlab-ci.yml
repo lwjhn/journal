@@ -17,7 +17,7 @@ variables:
   # 项目模块名称
   MODULE_NAME: journal
   # 接收地址
-  PROJECT_PATH: /data/oa-fjszf
+  PROJECT_PATH: /data2/oa-fjszf
   # 运行端口
   RUNNING_PORT: 3950
   # 运行激活
