@@ -24,7 +24,7 @@ public class OrderLimit extends GenericForm {
 
     private BigDecimal limitAmount;
 
-    private String Company;
+    private String company;
 
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
@@ -79,11 +79,11 @@ public class OrderLimit extends GenericForm {
     }
 
     public String getCompany() {
-        return Company;
+        return company;
     }
 
     public void setCompany(String company) {
-        Company = company;
+        this.company = company;
     }
 
     public Set<String> getReaders() {
