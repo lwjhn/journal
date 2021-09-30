@@ -135,4 +135,4 @@ logging:
   level:
     com.rongji.egov: debug
 server:
-  port: 3689
+  port: 9950
