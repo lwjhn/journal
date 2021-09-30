@@ -19,7 +19,7 @@ variables:
   # 接收地址
   PROJECT_PATH: /data2/oa-fjszf
   # 运行端口
-  RUNNING_PORT: 3950
+  RUNNING_PORT: 9950
   # 运行激活
   ACTIVE_PROFILE: test
   # JVM选项
