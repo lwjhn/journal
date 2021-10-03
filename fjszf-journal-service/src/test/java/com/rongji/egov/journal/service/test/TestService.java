@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
+import com.rongji.egov.mybatis.base.pattern.verifier.BaseVerifier;
 import com.rongji.egov.mybatis.base.querier.SelectListQuerier;
 import com.rongji.egov.mybatis.base.sql.SQLSelector;
 import com.rongji.egov.mybatis.base.utils.AutoCloseableBase;
