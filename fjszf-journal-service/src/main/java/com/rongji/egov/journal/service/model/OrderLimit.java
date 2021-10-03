@@ -26,6 +26,8 @@ public class OrderLimit extends GenericForm {
 
     private String company;
 
+    private Integer sortNo;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -86,6 +88,14 @@ public class OrderLimit extends GenericForm {
         this.company = company;
     }
 
+    public Integer getSortNo() {
+        return sortNo;
+    }
+
+    public void setSortNo(Integer sortNo) {
+        this.sortNo = sortNo;
+    }
+
     public Set<String> getReaders() {
         return readers;
     }
@@ -93,6 +103,4 @@ public class OrderLimit extends GenericForm {
     public void setReaders(Set<String> readers) {
         this.readers = readers;
     }
-
-
 }
