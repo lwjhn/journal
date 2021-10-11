@@ -16,7 +16,7 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     JOURNAL         VARCHAR(32)           NOT NULL, --报纸/期刊
     LANG            VARCHAR(32)           NOT NULL, --语言，默认中文
     PAPER_TYPE      VARCHAR(100),                   --类型
-    PERIODICAL      VARCHAR(32)           NOT NULL, --刊期：周刊、季刊、半年刊、月刊、年刊
+    PERIODICAL      VARCHAR(32),                    --刊期：周刊、季刊、半年刊、月刊、年刊
     UNIT_PRICE      DECIMAL(10, 2)        NOT NULL, --价格
     YEAR_PRICE      DECIMAL(10, 2)        NOT NULL, --年价
     DELIVERY_METHOD VARCHAR(100)          NOT NULL, --订阅路径：默认 邮发
@@ -148,17 +148,20 @@ CREATE TABLE EGOV_JOURNAL_STAT_PRINT_CONFIG
 CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
 (
     ID              VARCHAR(32)    NOT NULL,
-    SUBSCRIBE_YEAR  INT            NOT NULL,            --订阅年份
-    SUBSCRIBE_BEGIN TIMESTAMP      NOT NULL,            --起始月订期
-    SUBSCRIBE_END   TIMESTAMP      NOT NULL DEFAULT 12, --截至月订期
+    SUBSCRIBE_YEAR  INT            NOT NULL,                        --订阅年份
+    SUBSCRIBE_BEGIN TIMESTAMP      NOT NULL,                        --起始月订期
+    SUBSCRIBE_END   TIMESTAMP      NOT NULL DEFAULT 12,             --截至月订期
 
-    LIMIT_COUNT     INT            NOT NULL DEFAULT 0,  --刊数
-    LIMIT_COPIES    INT            NOT NULL DEFAULT 0,  --报数
-    LIMIT_AMOUNT    DECIMAL(10, 2) NOT NULL DEFAULT 0,  --价格
+    LIMIT_COUNT     INT            NOT NULL DEFAULT 0,              --刊数
+    LIMIT_COPIES    INT            NOT NULL DEFAULT 0,              --报数
+    LIMIT_AMOUNT    DECIMAL(10, 2) NOT NULL DEFAULT 0,              --价格
     COMPANY         VARCHAR(100)   NOT NULL,
-    SORT_NO         INT   NOT NULL DEFAULT 1,        --排序号
+    SORT_NO         INT            NOT NULL DEFAULT 1,              --排序号
 
-    READERS         VARCHAR(100),                       --["*"] 所有人可见
+    IS_VALID        boolean                 DEFAULT TRUE NOT NULL,  --是否有效
+    REQUISITE       boolean                 DEFAULT FALSE NOT NULL, --是否必订阅刊物
+
+    READERS         VARCHAR(100),                                   --["*"] 所有人可见
 
     DRAFT_USER      VARCHAR(64),
     DRAFT_USER_NO   VARCHAR(16),
@@ -167,7 +170,7 @@ CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
     SYSTEM_NO       VARCHAR(64),
     CREATE_TIME     TIMESTAMP,
     UPDATE_TIME     TIMESTAMP,
-    MANAGERS        CLOB,                               --管理员，群组或角色
+    MANAGERS        CLOB,                                           --管理员，群组或角色
     CONSTRAINT CONS1342192349 PRIMARY KEY (ID)
 )
 ```
@@ -195,6 +198,15 @@ rongji:
 ALTER TABLE EGOV_JOURNAL_PAPER
     ADD REQUISITE boolean DEFAULT FALSE NOT NULL;
 
-ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT 
+ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
     ADD SORT_NO int DEFAULT 1 NOT NULL;
+
+
+-- 2021/10/11
+ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
+    ADD IS_VALID boolean DEFAULT TRUE NOT NULL;
+ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
+    ADD REQUISITE boolean DEFAULT TRUE NOT NULL;
+    
+ALTER TABLE EGOV_JOURNAL_PAPER MODIFIES  PERIODICAL NULL;
 ```

@@ -28,6 +28,10 @@ public class OrderLimit extends GenericForm {
 
     private Integer sortNo;
 
+    private Boolean isValid;
+
+    private Boolean requisite;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -94,6 +98,22 @@ public class OrderLimit extends GenericForm {
 
     public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
+    }
+
+    public Boolean getValid() {
+        return isValid;
+    }
+
+    public void setValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    public Boolean getRequisite() {
+        return requisite;
+    }
+
+    public void setRequisite(Boolean requisite) {
+        this.requisite = requisite;
     }
 
     public Set<String> getReaders() {

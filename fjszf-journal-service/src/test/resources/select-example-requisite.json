@@ -1,0 +1,50 @@
+{
+  "join": [
+    {
+      "type": "LEFT",
+      "tableAlias": "tOrder",
+      "table":{
+        "where": {
+          "expression": "Subscription.govExpense is TRUE and Subscription.subscribeYear=? and (Subscription.id=? or ( (Subscription.verifyStatus=1 or Subscription.verifyStatus=2)) and Subscription.subscribeOrg=?)",
+          "value": [2022, "da60cd799c1e40bbb9af5e2a8f4703d7", "离退休干部工作处"]
+        },
+        "model": "com.rongji.egov.journal.service.model.Subscription",
+        "tableAlias": "Subscription",
+        "join": [
+          {
+            "type": "LEFT",
+            "model": "com.rongji.egov.journal.service.model.Order",
+            "tableAlias": "Order",
+            "on": {
+              "expression": "Subscription.id = Order.pid"
+            }
+          }
+        ],
+        "fields": [
+          {
+            "expression": "Order.paperId",
+            "alias": "id"
+          }
+        ],
+        "group": {
+          "expression": "Order.paperId"
+        }
+      },
+      "on": {
+        "expression": "tOrder.id = Paper.id"
+      }
+    }
+  ],
+  "where": {
+    "expression": "Paper.requisite IS TRUE AND Paper.isValid IS TRUE AND tOrder.id IS NULL"
+  },
+  "model": "com.rongji.egov.journal.service.model.Paper",
+  "tableAlias": "Paper",
+  "fields": [{
+    "expression": "group_concat(Paper.publication)",
+    "alias": "publication"
+  }, {
+    "expression": "count(Paper.publication)",
+    "alias": "count"
+  }]
+}

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
+import com.rongji.egov.mybatis.base.pattern.SQLFactory;
+import com.rongji.egov.mybatis.base.pattern.SQLSelectorPattern;
 import com.rongji.egov.mybatis.base.pattern.verifier.BaseVerifier;
 import com.rongji.egov.mybatis.base.querier.SelectListQuerier;
 import com.rongji.egov.mybatis.base.sql.SQLSelector;
@@ -37,6 +39,27 @@ public class TestService {
         System.out.println(moduleProperties.managers.size());
         System.out.println(JSON.toJSONString(moduleProperties.managers));
     }
+
+    @Test
+    public void testGenerateSQL() {
+        InputStream is = null;
+        try {
+            is = TestService.class.getClassLoader().getResourceAsStream("select-example-requisite.json");
+            assert is != null;
+            SQLSelector selector = JSONObject.parseObject(is, SQLSelector.class);
+            System.out.println(SQLFactory.generate(selector));
+            System.out.println("\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
+            List<HashCamelMap> result = baseMapper.select(
+                    new SelectListQuerier<HashCamelMap>().setResultMap(HashCamelMap.class).setSqlHandler(selector)
+            );
+            System.out.println(JSON.toJSONString(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            AutoCloseableBase.close(is);
+        }
+    }
+
 
     @Test
     public void test3() {
