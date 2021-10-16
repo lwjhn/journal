@@ -1,0 +1,91 @@
+{
+  "fields": [
+    {
+      "expression": "id",
+      "alias": "id"
+    },
+    {
+      "expression": "publication",
+      "alias": "_DEF_COL_1"
+    },
+    {
+      "expression": "postalDisCode",
+      "alias": "_DEF_COL_2"
+    },
+    {
+      "expression": "journal",
+      "alias": "_DEF_COL_3"
+    },
+    {
+      "expression": "unitPrice",
+      "alias": "_DEF_COL_4"
+    },
+    {
+      "expression": "yearPrice",
+      "alias": "_DEF_COL_5"
+    },
+    {
+      "expression": "deliveryMethod",
+      "alias": "_DEF_COL_6"
+    },
+    {
+      "expression": "press",
+      "alias": "_DEF_COL_7"
+    },
+    {
+      "expression": "CASE isValid WHEN TRUE THEN ? ELSE ? END",
+      "alias": "_DEF_COL_8",
+      "value": [
+        "启用",
+        "废弃"
+      ]
+    }
+  ],
+  "order": [],
+  "limit": [
+    0,
+    15
+  ],
+  "where": {
+    "expression": "(History.SubscribeYear = 2021)",
+    "value": []
+  },
+  "model": "com.rongji.egov.journal.service.model.Paper",
+  "tableAlias": "paper",
+  "join": [
+    {
+      "type": "LEFT",
+      "table": {
+        "fields": [
+          {
+            "expression": "order.paperId",
+            "alias": "paperId"
+          },
+          {
+            "expression": "subscription.subscribeYear",
+            "alias": "subscribeYear"
+          }
+        ],
+        "model": "com.rongji.egov.journal.service.model.Subscription",
+        "tableAlias": "subscription",
+        "join": [
+          {
+            "type": "LEFT",
+            "model": "com.rongji.egov.journal.service.model.Order",
+            "tableAlias": "order",
+            "on": {
+              "expression": "subscription.id = order.pid"
+            }
+          }
+        ],
+        "group": {
+          "expression": "subscription.subscribeYear, order.paperId"
+        }
+      },
+      "tableAlias": "History",
+      "on": {
+        "expression": "History.paperId = paper.id"
+      }
+    }
+  ]
+}

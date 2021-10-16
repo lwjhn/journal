@@ -1,0 +1,88 @@
+{
+  "model": "com.rongji.egov.journal.service.model.Subscription",
+  "tableAlias": "Subscription",
+  "join": [
+    {
+      "type": "LEFT",
+      "model": "com.rongji.egov.journal.service.model.Order",
+      "tableAlias": "Order",
+      "on": {
+        "expression": "Subscription.id = Order.pid"
+      },
+      "join": [
+        {
+          "type": "LEFT",
+          "model": "com.rongji.egov.journal.service.model.Paper",
+          "tableAlias": "Paper",
+          "on": {
+            "expression": "Order.paperId = Paper.id"
+          }
+        }
+      ]
+    },
+    {
+      "type": "LEFT",
+      "tableAlias": "OrderLimit",
+      "table": {
+        "fields": [
+          {
+            "expression": "company",
+            "alias": "company"
+          },
+          {
+            "expression": "max(sortNo)",
+            "alias": "sortNo"
+          }
+        ],
+        "model": "com.rongji.egov.journal.service.model.OrderLimit",
+        "group": {
+          "expression": "company"
+        }
+      },
+      "on": {
+        "expression": "OrderLimit.company = Subscription.subscribeOrg"
+      }
+    }
+  ],
+  "where": {
+    "expression": "(Subscription.verifyStatus=2)",
+    "value": []
+  },
+  "fields": [
+    {
+      "expression": "Paper.postalDisCode",
+      "alias": "item0"
+    },
+    {
+      "expression": "Paper.publication",
+      "alias": "item1"
+    },
+    {
+      "expression": "LTRIM(subscribeYear) + ? + LTRIM(subscribeMonthBegin) + ? + LTRIM(subscribeMonthEnd) + ?",
+      "alias": "item2",
+      "value": [
+        "(",
+        "-",
+        ")"
+      ]
+    },
+    {
+      "expression": "sum(Order.subscribeCopies)",
+      "alias": "item3"
+    },
+    {
+      "expression": "sum(Paper.yearPrice * Order.subscribeCopies)",
+      "alias": "amount"
+    },
+    {
+      "expression": "Subscription.subscribeOrg",
+      "alias": "org"
+    }
+  ],
+  "group": {
+    "expression": "Paper.postalDisCode,Paper.publication, subscribeYear,subscribeMonthBegin,subscribeMonthBegin,subscribeMonthEnd,Subscription.subscribeOrg"
+  },
+  "order": {
+    "expression": "max(OrderLimit.sortNo) ASC, Subscription.subscribeOrg, max(Paper.sortNo) ASC"
+  }
+}

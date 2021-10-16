@@ -44,7 +44,7 @@ public class TestService {
     public void testGenerateSQL() {
         InputStream is = null;
         try {
-            is = TestService.class.getClassLoader().getResourceAsStream("select-example-requisite.json");
+            is = TestService.class.getClassLoader().getResourceAsStream("select-example-paper.json");
             assert is != null;
             SQLSelector selector = JSONObject.parseObject(is, SQLSelector.class);
             System.out.println(SQLFactory.generate(selector));
