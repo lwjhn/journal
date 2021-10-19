@@ -88,6 +88,10 @@ spring:
     url: jdbc:oscar://192.168.210.134:2003/OSRDB
     username: FJSZF
     password: FJSZF
+#    url: jdbc:mysql://192.168.210.153:3399/xc_demo?connectTimeout=3000&socketTimeout=60000&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#    username: rjsoft
+#    password: abcd1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: 192.168.210.153
     password: 4A027FD3C83E1451482582DE000A9A88

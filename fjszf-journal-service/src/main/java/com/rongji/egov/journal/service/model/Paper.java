@@ -50,6 +50,10 @@ public class Paper extends GenericForm {
 
     private Boolean requisite;
 
+    private String productId;
+
+    private String memo;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -212,5 +216,21 @@ public class Paper extends GenericForm {
 
     public void setRequisite(Boolean requisite) {
         this.requisite = requisite;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }
