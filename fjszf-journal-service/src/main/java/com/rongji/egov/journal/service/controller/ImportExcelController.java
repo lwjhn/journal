@@ -25,7 +25,7 @@ public class ImportExcelController {
     ModelLoader modelLoader;
 
     @PostMapping("/excel/input")
-    public Object queryPage(@RequestBody ImportConfig config,
+    public Object excelInput(@RequestBody ImportConfig config,
                             @RequestParam(value = "file", required = false, defaultValue = "") String file) {
         Acl acl = modelLoader.getAcl();
         if (acl.getRoleNoList().size() < 1) {
