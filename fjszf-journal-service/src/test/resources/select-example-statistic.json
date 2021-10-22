@@ -1,4 +1,10 @@
 {
+  "where": {
+    "expression": "(Subscription.subscribeYear=?) AND (Subscription.verifyStatus=2)",
+    "value": [
+      2021
+    ]
+  },
   "model": "com.rongji.egov.journal.service.model.Subscription",
   "tableAlias": "Subscription",
   "join": [
@@ -42,45 +48,64 @@
       "on": {
         "expression": "OrderLimit.company = Subscription.subscribeOrg"
       }
+    },
+    {
+      "type": "LEFT",
+      "tableAlias": "StatPrintConfig",
+      "model": "com.rongji.egov.journal.service.model.StatPrintConfig",
+      "on": {
+        "expression": "StatPrintConfig.company = CASE REGEXP_LIKE(Subscription.subscribeOrgNo, ?, ?) WHEN FALSE THEN Subscription.subscribeUser ELSE Subscription.subscribeOrg END",
+        "value": [
+          "^[a-z][0-9]{5,6}$",
+          "i"
+        ]
+      }
     }
   ],
-  "where": {
-    "expression": "(Subscription.verifyStatus=2)",
-    "value": []
-  },
   "fields": [
     {
-      "expression": "Paper.postalDisCode",
+      "expression": "Paper.productId",
       "alias": "item0"
     },
     {
-      "expression": "Paper.publication",
+      "expression": "Paper.postalDisCode",
       "alias": "item1"
     },
     {
-      "expression": "LTRIM(subscribeYear) + ? + LTRIM(subscribeMonthBegin) + ? + LTRIM(subscribeMonthEnd) + ?",
-      "alias": "item2",
-      "value": [
-        "(",
-        "-",
-        ")"
-      ]
+      "expression": "Paper.publication",
+      "alias": "item2"
     },
     {
       "expression": "sum(Order.subscribeCopies)",
       "alias": "item3"
     },
     {
-      "expression": "sum(Paper.yearPrice * Order.subscribeCopies)",
-      "alias": "amount"
+      "expression": "CASE REGEXP_LIKE(Subscription.subscribeOrgNo, ?, ?)        WHEN FALSE THEN Subscription.subscribeUser ELSE Subscription.subscribeOrg END",
+      "alias": "org",
+      "value": [
+        "^[a-z][0-9]{5,6}$",
+        "i"
+      ]
     },
     {
-      "expression": "Subscription.subscribeOrg",
-      "alias": "org"
+      "expression": "MIN(StatPrintConfig.phoneNo)",
+      "alias": "item5"
+    },
+    {
+      "expression": "subscribeMonthBegin",
+      "alias": "subscribe_month_begin"
+    },
+    {
+      "expression": "subscribeMonthEnd",
+      "alias": "subscribe_month_end"
+    },
+    {
+      "expression": "MIN(StatPrintConfig.address)",
+      "alias": "address"
     }
   ],
   "group": {
-    "expression": "Paper.postalDisCode,Paper.publication, subscribeYear,subscribeMonthBegin,subscribeMonthBegin,subscribeMonthEnd,Subscription.subscribeOrg"
+    "expression": "Paper.productId, Paper.postalDisCode,Paper.publication, subscribeYear, subscribeMonthBegin, subscribeMonthEnd,Subscription.subscribeOrg, Subscription.subscribeOrgNo, Subscription.subscribeUser"
   },
   "order": {
     "expression": "max(OrderLimit.sortNo) ASC, Subscription.subscribeOrg, max(Paper.sortNo) ASC"
