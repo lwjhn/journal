@@ -12,6 +12,7 @@ import com.rongji.egov.mybatis.dac.querier.DacUpdateQuerier;
 import com.rongji.egov.mybatis.web.model.ModelLoader;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -50,11 +52,15 @@ public class ImportExcelController {
                             @RequestParam(value = "file", required = false, defaultValue = "") String file) {
         Acl acl = checkAuthor();
 
+        File dest = new File(root);
+        if (!(dest.exists() && dest.isDirectory())) {
+            return true;
+        }
         InputStream is = null;
         try {
             ImportExecutor executor = new ImportExecutor(config);
-            is = getClass().getResourceAsStream("/" + file.replaceAll(".*[/\\\\]",""));
-            assert is != null;
+            is = new FileInputStream(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]",""));
+            Assert.notNull(is, "can't find file . " + file.replaceAll(".*[/\\\\]",""));
             return executor.action(new XSSFWorkbook(is), (model, values) ->
                     baseMapper.update(
                             modelLoader.invokeInterceptor(new DacUpdateQuerier().setAcl(acl)
