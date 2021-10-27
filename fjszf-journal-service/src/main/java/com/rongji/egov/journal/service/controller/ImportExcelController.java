@@ -59,7 +59,10 @@ public class ImportExcelController {
             ImportExecutor executor = new ImportExecutor(config);
             is = new FileInputStream(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]",""));
             Assert.notNull(is, "can't find file . " + file.replaceAll(".*[/\\\\]",""));
-            return executor.action(new XSSFWorkbook(is), (model, values) ->
+            System.out.println(">>>-loading-->" + file);
+            XSSFWorkbook workbook=new XSSFWorkbook(is);
+            System.out.println(">>>-loaded-->" + file);
+            return executor.action(workbook, (model, values) ->
                     baseMapper.update(
                             modelLoader.invokeInterceptor(new DacUpdateQuerier().setAcl(acl)
                                     .setSqlHandler(new SQLInserter(model, values)))
