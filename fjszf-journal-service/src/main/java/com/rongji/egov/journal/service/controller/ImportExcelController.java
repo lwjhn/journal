@@ -2,6 +2,7 @@ package com.rongji.egov.journal.service.controller;
 
 import com.rongji.egov.journal.service.excel.input.ImportConfig;
 import com.rongji.egov.journal.service.excel.input.ImportExecutor;
+import com.rongji.egov.journal.service.excel.input.SheetXMLExecutor;
 import com.rongji.egov.journal.service.utils.FileOperator;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
 import com.rongji.egov.mybatis.base.sql.SQLInserter;
@@ -10,6 +11,7 @@ import com.rongji.egov.mybatis.base.utils.StringUtils;
 import com.rongji.egov.mybatis.dac.handler.Acl;
 import com.rongji.egov.mybatis.dac.querier.DacUpdateQuerier;
 import com.rongji.egov.mybatis.web.model.ModelLoader;
+import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
@@ -47,6 +49,33 @@ public class ImportExcelController {
 
     @PostMapping("/excel/input")
     public Object excelInput(@RequestBody ImportConfig config,
+                              @RequestParam(value = "file", required = false, defaultValue = "") String file) {
+        Acl acl = checkAuthor();
+
+        File dest = new File(root);
+        if (!(dest.exists() && dest.isDirectory())) {
+            return true;
+        }
+        SheetXMLExecutor sheetXMLExecutor = null;
+        InputStream is = null;
+        try {
+            ImportExecutor executor = new ImportExecutor(config);
+            sheetXMLExecutor = new SheetXMLExecutor(new File(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]","")), PackageAccess.READ);
+            return executor.action(sheetXMLExecutor, (model, values) ->
+                    baseMapper.update(
+                            modelLoader.invokeInterceptor(new DacUpdateQuerier().setAcl(acl)
+                                    .setSqlHandler(new SQLInserter(model, values)))
+                    )
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            AutoCloseableBase.close(sheetXMLExecutor, is);
+        }
+    }
+
+    @PostMapping("/excel/input2")
+    public Object excelInput2(@RequestBody ImportConfig config,
                             @RequestParam(value = "file", required = false, defaultValue = "") String file) {
         Acl acl = checkAuthor();
 

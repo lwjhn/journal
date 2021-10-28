@@ -127,6 +127,16 @@
       "value": [
         39
       ]
+    },
+    "managers":{
+      "value": [
+        "[\"sys_manager\",\"journal_manager\"]"
+      ]
+    },
+    "readers": {
+      "value": [
+        "[\"*\"]"
+      ]
     }
   }
 }
