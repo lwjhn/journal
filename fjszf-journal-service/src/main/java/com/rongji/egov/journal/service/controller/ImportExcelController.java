@@ -21,10 +21,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashSet;
 
 @CrossOrigin(origins = "*")
@@ -39,7 +38,7 @@ public class ImportExcelController {
     @Value("${rongji.module.journal.excel-path}")
     String root;
 
-    public Acl checkAuthor(){
+    public Acl checkAuthor() {
         Acl acl = modelLoader.getAcl();
         if (acl.getRoleNoList().size() < 1) {
             throw new RuntimeException("no authority .");
@@ -49,7 +48,7 @@ public class ImportExcelController {
 
     @PostMapping("/excel/input")
     public Object excelInput(@RequestBody ImportConfig config,
-                              @RequestParam(value = "file", required = false, defaultValue = "") String file) {
+                             @RequestParam(value = "file", required = false, defaultValue = "") String file) {
         Acl acl = checkAuthor();
 
         File dest = new File(root);
@@ -57,10 +56,9 @@ public class ImportExcelController {
             return true;
         }
         SheetXMLExecutor sheetXMLExecutor = null;
-        InputStream is = null;
         try {
             ImportExecutor executor = new ImportExecutor(config);
-            sheetXMLExecutor = new SheetXMLExecutor(new File(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]","")), PackageAccess.READ);
+            sheetXMLExecutor = new SheetXMLExecutor(new File(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]", "")), PackageAccess.READ);
             return executor.action(sheetXMLExecutor, (model, values) ->
                     baseMapper.update(
                             modelLoader.invokeInterceptor(new DacUpdateQuerier().setAcl(acl)
@@ -70,43 +68,13 @@ public class ImportExcelController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AutoCloseableBase.close(sheetXMLExecutor, is);
-        }
-    }
-
-    @PostMapping("/excel/input2")
-    public Object excelInput2(@RequestBody ImportConfig config,
-                            @RequestParam(value = "file", required = false, defaultValue = "") String file) {
-        Acl acl = checkAuthor();
-
-        File dest = new File(root);
-        if (!(dest.exists() && dest.isDirectory())) {
-            return true;
-        }
-        InputStream is = null;
-        try {
-            ImportExecutor executor = new ImportExecutor(config);
-            is = new FileInputStream(dest.getAbsolutePath() + "/" + file.replaceAll(".*[/\\\\]",""));
-            Assert.notNull(is, "can't find file . " + file.replaceAll(".*[/\\\\]",""));
-            System.out.println(">>>-loading-->" + file);
-            XSSFWorkbook workbook=new XSSFWorkbook(is);
-            System.out.println(">>>-loaded-->" + file);
-            return executor.action(workbook, (model, values) ->
-                    baseMapper.update(
-                            modelLoader.invokeInterceptor(new DacUpdateQuerier().setAcl(acl)
-                                    .setSqlHandler(new SQLInserter(model, values)))
-                    )
-            );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            AutoCloseableBase.close(is);
+            AutoCloseableBase.close(sheetXMLExecutor);
         }
     }
 
     @SuppressWarnings("all")
     @GetMapping("/excel/list")
-    public String[] getExcelList(){
+    public String[] getExcelList() {
         checkAuthor();
 
         try {
@@ -115,7 +83,7 @@ public class ImportExcelController {
                 file.mkdirs();
             }
             return file.list();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -123,7 +91,7 @@ public class ImportExcelController {
 
     @SuppressWarnings("all")
     @PostMapping("/excel/del")
-    public boolean getExcelList(@RequestBody HashSet<String> list){
+    public boolean getExcelList(@RequestBody HashSet<String> list) {
         checkAuthor();
 
         try {
@@ -132,39 +100,68 @@ public class ImportExcelController {
                 return true;
             }
             String base = file.getAbsolutePath() + "/";
-            for(String path : list){
-                if(StringUtils.isBlank(path))
+            for (String path : list) {
+                if (StringUtils.isBlank(path))   //path=path.replaceAll(".*[/\\\\]","")
                     continue;
-                if(FileOperator.isInValidFileName(path)){
+                if (FileOperator.isInValidFileName(path)) {
                     throw new RuntimeException("file name is invalid , contains special character . " + path);
                 }
                 FileOperator.deleteDir(new File(base + path));
             }
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/excel/download")
+    public void downloadExcel(HttpServletResponse response,
+                              @RequestParam(value = "file", required = false, defaultValue = "") String file) {
+        checkAuthor();
+
+        OutputStream os = null;
+        InputStream is = null;
+        try {
+            file = file.replaceAll(".*[/\\\\]", "");
+            File dest = new File(root);
+            if (!(dest.exists() && dest.isDirectory())
+                    || StringUtils.isBlank(file)
+                    || !((dest = new File(dest.getAbsolutePath() + "/" + file)).exists() && dest.isFile())
+            ) {
+                throw new RuntimeException("can not find file : " + file);
+            }
+
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/octet-stream");
+            response.setContentLengthLong(dest.length());
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file, "UTF-8"));
+            FileOperator.copyStream(is = new FileInputStream(dest), os = response.getOutputStream());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            AutoCloseableBase.close(is, os);
         }
     }
 
     @SuppressWarnings("all")
     @PostMapping("/excel/upload")
-    public boolean uploadExcel(HttpServletRequest request){
+    public boolean uploadExcel(HttpServletRequest request) {
         checkAuthor();
 
-        for(MultipartFile file : ((MultipartHttpServletRequest) request).getFiles("file")){
-            if(file.isEmpty()){
+        for (MultipartFile file : ((MultipartHttpServletRequest) request).getFiles("file")) {
+            if (file.isEmpty()) {
                 continue;   //throw new RuntimeException("file is empty .");
             }
             String filename = file.getOriginalFilename();
-            if(StringUtils.isBlank(filename) || StringUtils.isBlank(filename=FileOperator.getFileNameByRegex(filename))){
+            if (StringUtils.isBlank(filename) || StringUtils.isBlank(filename = FileOperator.getFileNameByRegex(filename))) {
                 throw new RuntimeException("file name is invalid .");
             }
             File dest = new File(root);
             if (!(dest.exists() && dest.isDirectory())) {
                 dest.mkdirs();
             }
-            dest=new File(dest.getAbsolutePath() + "/" + filename);
-            try{
+            dest = new File(dest.getAbsolutePath() + "/" + filename);
+            try {
                 file.transferTo(dest);
             } catch (IOException e) {
                 throw new RuntimeException(e);

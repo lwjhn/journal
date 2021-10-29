@@ -56,8 +56,7 @@ public class TestImportExcel {
 
             sheetXMLExecutor = new SheetXMLExecutor(new File("C:/temp/报刊产品查询.xlsx"), PackageAccess.READ);
             int result = executor.action(sheetXMLExecutor, (model, values) -> {
-                        //System.out.println(JSON.toJSONString(new SQLInserter(model, values)));
-                        //System.out.println(SQLFactory.generate(new SQLInserter(model, values)));
+                        System.out.println(SQLFactory.generate(new SQLInserter(model, values)));
                         return baseMapper.update(new DacUpdateQuerier().setAcl(null)
                                 .setSqlHandler(new SQLInserter(model, values)));
                     }
