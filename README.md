@@ -177,6 +177,32 @@ CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
 )
 ```
 
+#### 模块配置
+```sql
+CREATE TABLE EGOV_JOURNAL_DB_CONFIG
+(
+    ID              VARCHAR(32)    NOT NULL,
+    
+    PANEL_URL     INT            NOT NULL,  --分发接口地址
+    PANEL_HORIZONTAL     INT            NOT NULL DEFAULT 5,   --分发面板水平数量
+    PANEL_VERTICAL     INT            NOT NULL DEFAULT 10,     --分发面板垂直数量
+    PANEL_ITEMS        CLOB,    --分发面板选项相关配置信息，刊物名，邮发代号。分发时以邮发代号为关联
+    
+    READERS         VARCHAR(100),                                   --["*"] 所有人可见
+
+    DRAFT_USER      VARCHAR(64),
+    DRAFT_USER_NO   VARCHAR(16),
+    DRAFT_ORG       VARCHAR(64),
+    DRAFT_ORG_NO    VARCHAR(16),
+    SYSTEM_NO       VARCHAR(64),
+    CREATE_TIME     TIMESTAMP,
+    UPDATE_TIME     TIMESTAMP,
+    MANAGERS        CLOB,                                           --管理员，群组或角色
+    CONSTRAINT CONS1342192350 PRIMARY KEY (ID)
+)
+```
+
+
 ### ACL角色及管理
 
 #### 管理员配置

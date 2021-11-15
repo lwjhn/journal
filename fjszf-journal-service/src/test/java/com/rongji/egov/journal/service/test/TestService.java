@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.rongji.egov.journal.service.properties.ModuleProperties;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
 import com.rongji.egov.mybatis.base.pattern.SQLFactory;
-import com.rongji.egov.mybatis.base.pattern.SQLSelectorPattern;
-import com.rongji.egov.mybatis.base.pattern.verifier.BaseVerifier;
 import com.rongji.egov.mybatis.base.querier.SelectListQuerier;
 import com.rongji.egov.mybatis.base.sql.SQLSelector;
 import com.rongji.egov.mybatis.base.utils.AutoCloseableBase;
@@ -24,6 +22,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -34,8 +33,16 @@ public class TestService {
     @Resource
     ModuleProperties moduleProperties;
 
+    Pattern pattern = Pattern.compile("(\\s|.)*<retmesg(\\s[^>]*)*>\\s*|\\s*</(\\s[^>]*)*retmesg(\\s[^>]*)*>(\\s|.)*", Pattern.CASE_INSENSITIVE);
+
     @Test
     public void testProperty(){
+        String src="<response_info>\n" +
+                "        <gwid>486f8fe2-d49f-4570-9f86-c4ad00780613</gwid>\n" +
+                "        <retcode >00</retcode>\n" +
+                "        <retmesg s=\"1\">OK</ retmesg >\n" +
+                "    </response_info>";
+        System.out.println(src.replaceAll("(\\s|.)*<retmesg(\\s[^>]*)*>\\s*|\\s*</(\\s[^>]*)*retmesg(\\s[^>]*)*>(\\s|.)*",""));
         System.out.println(moduleProperties.managers.size());
         System.out.println(JSON.toJSONString(moduleProperties.managers));
     }
@@ -83,9 +90,10 @@ public class TestService {
     public void test4() {
         InputStream is = null;
         try {
-            is = TestService.class.getClassLoader().getResourceAsStream("select-example.json");
+            is = TestService.class.getClassLoader().getResourceAsStream("select-example-paper.json");
             assert is != null;
             SQLSelector selector = JSONObject.parseObject(is, SQLSelector.class);
+            System.out.println(SQLFactory.generate(selector));
             List<HashCamelMap> result = baseMapper.select(
                     new SelectListQuerier<HashCamelMap>().setResultMap(HashCamelMap.class).setSqlHandler(selector)
             );

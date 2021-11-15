@@ -43,11 +43,11 @@
   ],
   "order": [],
   "limit": [
-    15,
-    30
+    0,
+    15
   ],
   "where": {
-    "expression": "(History.PaperId IS NOT NULL)",
+    "expression": "(History.PaperId IS NULL)",
     "value": []
   },
   "model": "com.rongji.egov.journal.service.model.Paper",
