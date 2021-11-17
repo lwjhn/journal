@@ -5,6 +5,7 @@ import com.rongji.egov.journal.service.excel.input.ImportExecutor;
 import com.rongji.egov.journal.service.excel.input.SheetXMLExecutor;
 import com.rongji.egov.journal.service.utils.FileOperator;
 import com.rongji.egov.mybatis.base.mapper.BaseMapper;
+import com.rongji.egov.mybatis.base.pattern.verifier.SQLVerifier;
 import com.rongji.egov.mybatis.base.sql.SQLInserter;
 import com.rongji.egov.mybatis.base.utils.AutoCloseableBase;
 import com.rongji.egov.mybatis.base.utils.StringUtils;
@@ -38,7 +39,7 @@ public class ImportExcelController {
 
     public Acl checkAuthor() {
         Acl acl = modelLoader.getAcl();
-        if (acl.getRoleNoList().size() < 1) {
+        if (SQLVerifier.requireNonEmpty(acl.getRoleNoList()) || SQLVerifier.requireNonEmpty(acl.getRoleNoList())) {
             throw new RuntimeException("no authority .");
         }
         return acl;

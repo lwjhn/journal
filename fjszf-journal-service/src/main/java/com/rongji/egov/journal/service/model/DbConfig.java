@@ -4,8 +4,6 @@ import com.rongji.egov.journal.service.base.model.GenericForm;
 import com.rongji.egov.mybatis.base.annotation.*;
 import com.rongji.egov.mybatis.base.wrapper.JsonTypeHandler;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

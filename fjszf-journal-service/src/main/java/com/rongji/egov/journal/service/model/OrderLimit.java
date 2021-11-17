@@ -32,6 +32,8 @@ public class OrderLimit extends GenericForm {
 
     private Boolean requisite;
 
+    private int repeatVerify;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -114,6 +116,14 @@ public class OrderLimit extends GenericForm {
 
     public void setRequisite(Boolean requisite) {
         this.requisite = requisite;
+    }
+
+    public int getRepeatVerify() {
+        return repeatVerify;
+    }
+
+    public void setRepeatVerify(int repeatVerify) {
+        this.repeatVerify = repeatVerify;
     }
 
     public Set<String> getReaders() {

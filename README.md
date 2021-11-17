@@ -29,10 +29,10 @@ CREATE TABLE EGOV_JOURNAL_PAPER
     GOV_EXPENSE     boolean DEFAULT FALSE NOT NULL, --公费刊物
     IS_VALID        boolean DEFAULT TRUE  NOT NULL, --是否有效
     REQUISITE       boolean DEFAULT FALSE NOT NULL, --是否必订阅刊物
-    PRODUCT_ID      VARCHAR(32),    --产品号
-    MEMO CLOB       clob,           --备注
+    PRODUCT_ID      VARCHAR(32),                    --产品号
+    MEMO            CLOB clob,                      --备注
     READERS         VARCHAR(64),                    --["*"] 所有人可见
-    
+
     DRAFT_USER      VARCHAR(64),
     DRAFT_USER_NO   VARCHAR(16),
     DRAFT_ORG       VARCHAR(64),
@@ -162,6 +162,7 @@ CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
 
     IS_VALID        boolean                 DEFAULT TRUE NOT NULL,  --是否有效
     REQUISITE       boolean                 DEFAULT FALSE NOT NULL, --是否必订阅刊物
+    REPEAT_VERIFY   INT                     DEFAULT 1 NOT NULL,     --重复验证方式，0-无, 1-按订阅处室，2-按订阅处室+订阅人
 
     READERS         VARCHAR(100),                                   --["*"] 所有人可见
 
@@ -178,30 +179,30 @@ CREATE TABLE EGOV_JOURNAL_ORDER_LIMIT
 ```
 
 #### 模块配置
+
 ```sql
 CREATE TABLE EGOV_JOURNAL_DB_CONFIG
 (
-    ID              VARCHAR(32)    NOT NULL,
-    
-    PANEL_URL     INT            NOT NULL,  --分发接口地址
-    PANEL_HORIZONTAL     INT            NOT NULL DEFAULT 5,   --分发面板水平数量
-    PANEL_VERTICAL     INT            NOT NULL DEFAULT 10,     --分发面板垂直数量
-    PANEL_ITEMS        CLOB,    --分发面板选项相关配置信息，刊物名，邮发代号。分发时以邮发代号为关联
-    
-    READERS         VARCHAR(100),                                   --["*"] 所有人可见
+    ID               VARCHAR(32) NOT NULL,
 
-    DRAFT_USER      VARCHAR(64),
-    DRAFT_USER_NO   VARCHAR(16),
-    DRAFT_ORG       VARCHAR(64),
-    DRAFT_ORG_NO    VARCHAR(16),
-    SYSTEM_NO       VARCHAR(64),
-    CREATE_TIME     TIMESTAMP,
-    UPDATE_TIME     TIMESTAMP,
-    MANAGERS        CLOB,                                           --管理员，群组或角色
+    PANEL_URL        INT         NOT NULL,            --分发接口地址
+    PANEL_HORIZONTAL INT         NOT NULL DEFAULT 5,  --分发面板水平数量
+    PANEL_VERTICAL   INT         NOT NULL DEFAULT 10, --分发面板垂直数量
+    PANEL_ITEMS      CLOB,                            --分发面板选项相关配置信息，刊物名，邮发代号。分发时以邮发代号为关联
+
+    READERS          VARCHAR(100),                    --["*"] 所有人可见
+
+    DRAFT_USER       VARCHAR(64),
+    DRAFT_USER_NO    VARCHAR(16),
+    DRAFT_ORG        VARCHAR(64),
+    DRAFT_ORG_NO     VARCHAR(16),
+    SYSTEM_NO        VARCHAR(64),
+    CREATE_TIME      TIMESTAMP,
+    UPDATE_TIME      TIMESTAMP,
+    MANAGERS         CLOB,                            --管理员，群组或角色
     CONSTRAINT CONS1342192350 PRIMARY KEY (ID)
 )
 ```
-
 
 ### ACL角色及管理
 
@@ -235,11 +236,17 @@ ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
     ADD IS_VALID boolean DEFAULT TRUE NOT NULL;
 ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
     ADD REQUISITE boolean DEFAULT TRUE NOT NULL;
-    
-ALTER TABLE EGOV_JOURNAL_PAPER MODIFIES  PERIODICAL NULL;
+
+ALTER TABLE EGOV_JOURNAL_PAPER MODIFIES PERIODICAL NULL;
 
 
 -- 2021/10/19
-ALTER TABLE EGOV_JOURNAL_PAPER ADD PRODUCT_ID VARCHAR(32);
-ALTER TABLE EGOV_JOURNAL_PAPER ADD MEMO CLOB;
+ALTER TABLE EGOV_JOURNAL_PAPER
+    ADD PRODUCT_ID VARCHAR(32);
+ALTER TABLE EGOV_JOURNAL_PAPER
+    ADD MEMO CLOB;
+
+-- 2021/11/17
+ALTER TABLE EGOV_JOURNAL_ORDER_LIMIT
+    ADD REPEAT_VERIFY INT DEFAULT 1 NOT NULL --重复验证方式，0-无, 1-按订阅处室，2-按订阅处室+订阅人
 ```
