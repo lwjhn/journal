@@ -3,6 +3,7 @@ package com.rongji.egov.journal.service.model;
 import com.rongji.egov.journal.service.base.model.GenericForm;
 import com.rongji.egov.mybatis.base.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @SuppressWarnings("unused")
@@ -44,6 +45,10 @@ public class Subscription extends GenericForm {
     private Date subscribeTime;
 
     private Date verifyTime;
+
+    private String publicationBrief;
+    private Integer subscribeCopiesBrief;
+    private BigDecimal amountBrief;
 
     public boolean isGovExpense() {
         return govExpense;
@@ -179,5 +184,29 @@ public class Subscription extends GenericForm {
 
     public void setVerifyTime(Date verifyTime) {
         this.verifyTime = verifyTime;
+    }
+
+    public String getPublicationBrief() {
+        return publicationBrief;
+    }
+
+    public void setPublicationBrief(String publicationBrief) {
+        this.publicationBrief = publicationBrief;
+    }
+
+    public Integer getSubscribeCopiesBrief() {
+        return subscribeCopiesBrief;
+    }
+
+    public void setSubscribeCopiesBrief(Integer subscribeCopiesBrief) {
+        this.subscribeCopiesBrief = subscribeCopiesBrief;
+    }
+
+    public BigDecimal getAmountBrief() {
+        return amountBrief;
+    }
+
+    public void setAmountBrief(BigDecimal amountBrief) {
+        this.amountBrief = amountBrief;
     }
 }
