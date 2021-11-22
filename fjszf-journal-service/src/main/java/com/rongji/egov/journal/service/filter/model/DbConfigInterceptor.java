@@ -29,7 +29,7 @@ public class DbConfigInterceptor extends GenericFormNormalInterceptor {
         Object sqlHandler = aclBaseQueryHandler.getSqlHandler();
         if (sqlHandler instanceof SQLDeleter || sqlHandler instanceof SQLInserter) {
             Acl acl = aclBaseQueryHandler.getAcl();
-            Assert.isTrue(SQLVerifier.requireNonEmpty(acl.getRoleNoList()) || SQLVerifier.requireNonEmpty(acl.getRoleNoList()), "not authorized to perform this operation (verifyStatus=2).");
+            Assert.isTrue(SQLVerifier.requireNonEmpty(acl.getRoleNoList()) || SQLVerifier.requireNonEmpty(acl.getRoleNoList()), "not authorized to perform this operation .");
         }
         return super.resolve(aclBaseQueryHandler, webServiceProperties);
     }

@@ -24,6 +24,7 @@ public class DefaultNormalInterceptor implements NormalInterceptor {
         proxy.put(Order.class, new OrderInterceptor(managers));
         proxy.put(StatPrintConfig.class, new StatPrintConfigInterceptor(managers));
         proxy.put(OrderLimit.class, new OrderLimitInterceptor(managers));
+        proxy.put(DbConfig.class, new DbConfigInterceptor(managers));
     }
 
     @Override
