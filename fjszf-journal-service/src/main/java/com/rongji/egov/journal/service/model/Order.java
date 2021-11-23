@@ -17,6 +17,8 @@ public class Order extends GenericForm {
 
     private Integer sortNo;
 
+    private Boolean dispatched;
+
     @Reader(ACL.PUB)
     @TypeHandler(JsonTypeHandler.class)
     private Set<String> readers;
@@ -43,6 +45,22 @@ public class Order extends GenericForm {
 
     public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
+    }
+
+    public String getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(String paperId) {
+        this.paperId = paperId;
+    }
+
+    public Boolean getDispatched() {
+        return dispatched;
+    }
+
+    public void setDispatched(Boolean dispatched) {
+        this.dispatched = dispatched;
     }
 
     public Set<String> getReaders() {
