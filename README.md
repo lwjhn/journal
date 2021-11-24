@@ -190,7 +190,7 @@ CREATE TABLE EGOV_JOURNAL_DB_CONFIG
 (
     ID               VARCHAR(32) NOT NULL,
 
-    PANEL_URL        INT         NOT NULL,            --分发接口地址
+    PANEL_URL        CLOB,                            --分发接口地址
     PANEL_HORIZONTAL INT         NOT NULL DEFAULT 5,  --分发面板水平数量
     PANEL_VERTICAL   INT         NOT NULL DEFAULT 10, --分发面板垂直数量
     PANEL_ITEMS      CLOB,                            --分发面板选项相关配置信息，刊物名，邮发代号。分发时以邮发代号为关联
@@ -279,6 +279,10 @@ SET (PUBLICATION_BRIEF, SUBSCRIBE_COPIES_BRIEF, AMOUNT_BRIEF) = (
 
 -- 2021/11/23
 ALTER TABLE EGOV_JOURNAL_ORDER
-    ADD DISPATCHED BOOLEAN DEFAULT FALSE NOT NULL;  --是否已分发
+    ADD DISPATCHED BOOLEAN DEFAULT FALSE NOT NULL;
+--是否已分发
 
+-- 2021/11/24
+ALTER TABLE EGOV_JOURNAL_DB_CONFIG
+    ADD PANEL_URL VARCHAR(1000); --分发接口地址
 ```
