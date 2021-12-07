@@ -2,12 +2,13 @@ package com.rongji.egov.journal.service.controller;
 
 import com.rongji.egov.journal.service.utils.FileOperator;
 import com.rongji.egov.mybatis.base.utils.AutoCloseableBase;
-import com.rongji.egov.mybatis.base.utils.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -54,8 +55,6 @@ public class HttpTunnelController {
                 }
                 response.setHeader(header.getKey(), String.join(", ", header.getValue()));
             }
-//            response.setHeader("Access-Control-Allow-Credentials", "true");
-//            response.setHeader("Access-Control-Allow-Origin", StringUtils.isNotBlank(key = request.getHeader("origin")) ? key : "*");
 
             FileOperator.copyStream(ish = http.getInputStream(), os = response.getOutputStream());
         } catch (Exception e) {
