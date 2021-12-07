@@ -19,6 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotEmpty;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +37,42 @@ public class TestService {
     ModuleProperties moduleProperties;
 
     Pattern pattern = Pattern.compile("(\\s|.)*<retmesg(\\s[^>]*)*>\\s*|\\s*</(\\s[^>]*)*retmesg(\\s[^>]*)*>(\\s|.)*", Pattern.CASE_INSENSITIVE);
+
+    @Test
+    public void testURL(){
+        HttpURLConnection http = null;
+        InputStream isr = null, ish=null;
+        OutputStream os = null;
+        try {
+            http = (HttpURLConnection) (new URL("http://192.168.210.160/domcfg.nsf/testls?openAgent")).openConnection();
+            http.setConnectTimeout(30000);
+            http.setReadTimeout(30000);
+            http.setDoInput(true);
+            http.setDoOutput(true);
+            http.setUseCaches(false);
+            http.setRequestMethod("GET");
+            http.setRequestProperty("Connection", "Close");
+            os = http.getOutputStream();
+            os.close();
+            ish = http.getInputStream();
+            byte[] buff = new byte[1024];
+            int rc;
+            os = System.out;
+            while ((rc = ish.read(buff, 0, 1024)) > 0) {
+                os.write(buff, 0, rc);
+                os.flush();
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            AutoCloseableBase.close(isr, ish, os);
+            try {
+                if (http != null) http.disconnect();
+            } catch (Exception ignored) {
+            }
+        }
+    }
 
     @Test
     public void testProperty(){
