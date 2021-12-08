@@ -27,7 +27,7 @@ public class HttpTunnelController {
     @RequestMapping(value = "/HttpTunnel", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS})
     public void httpTunnel(HttpServletRequest request, HttpServletResponse response) {
         HttpURLConnection http = null;
-        InputStream isr = null, ish=null;
+        InputStream isr = null, ish = null;
         OutputStream os = null;
         try {
             String url = request.getQueryString();
@@ -35,7 +35,6 @@ public class HttpTunnelController {
             String key, val;
             for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
                 if ((key = headerNames.nextElement()) != null && !EscapeHeaderPattern.matcher(key).find() && (val = request.getHeader(key)) != null) {
-                    System.out.println(key + ":" +val);
                     http.setRequestProperty(key, val);
                 }
             }
@@ -47,15 +46,13 @@ public class HttpTunnelController {
             http.setUseCaches(false);
             http.setRequestMethod(request.getMethod());
             http.setRequestProperty("Connection", "Close");
-            FileOperator.copyStream(isr=request.getInputStream(), os = http.getOutputStream());
+            FileOperator.copyStream(isr = request.getInputStream(), os = http.getOutputStream());
 
-            for(Map.Entry<String,List<String>> header : http.getHeaderFields().entrySet()){
-                if((key=header.getKey())==null || "Cookie".equalsIgnoreCase(key) || "Set-Cookie".equalsIgnoreCase(key)){
-                    continue;
+            for (Map.Entry<String, List<String>> header : http.getHeaderFields().entrySet()) {
+                if (!((key = header.getKey()) == null || "Cookie".equalsIgnoreCase(key) || "Set-Cookie".equalsIgnoreCase(key))) {
+                    response.setHeader(header.getKey(), String.join(", ", header.getValue()));
                 }
-                response.setHeader(header.getKey(), String.join(", ", header.getValue()));
             }
-
             FileOperator.copyStream(ish = http.getInputStream(), os = response.getOutputStream());
         } catch (Exception e) {
             throw new RuntimeException(e);
