@@ -50,7 +50,7 @@ public class HttpTunnelController {
 
             for (Map.Entry<String, List<String>> header : http.getHeaderFields().entrySet()) {
                 if (!((key = header.getKey()) == null || "Cookie".equalsIgnoreCase(key) || "Set-Cookie".equalsIgnoreCase(key))) {
-                    response.setHeader(header.getKey(), String.join(",", header.getValue()));
+                    response.setHeader(header.getKey(), String.join(", ", header.getValue()));
                 }
             }
             FileOperator.copyStream(ish = http.getInputStream(), os = response.getOutputStream());
