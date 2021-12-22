@@ -46,8 +46,9 @@ public class HttpTunnelController {
             http.setUseCaches(false);
             http.setRequestMethod(request.getMethod());
             http.setRequestProperty("Connection", "Close");
-            FileOperator.copyStream(isr = request.getInputStream(), os = http.getOutputStream());
-
+            if("post".equalsIgnoreCase(request.getMethod())){
+                FileOperator.copyStream(isr = request.getInputStream(), os = http.getOutputStream());
+            }
             for (Map.Entry<String, List<String>> header : http.getHeaderFields().entrySet()) {
                 if (!((key = header.getKey()) == null || "Cookie".equalsIgnoreCase(key) || "Set-Cookie".equalsIgnoreCase(key))) {
                     response.setHeader(header.getKey(), String.join(", ", header.getValue()));
