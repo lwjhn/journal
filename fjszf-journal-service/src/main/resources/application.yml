@@ -84,6 +84,9 @@ rongji:
       managers:
         - journal_manager
         - sys_manager
+    redis-prefix-key: "journal:doc:acl:user:"
+    redis-expire-timeout: 15
+    redis-expire-time-unit: minutes
 ---
 spring:
   profiles: dev
