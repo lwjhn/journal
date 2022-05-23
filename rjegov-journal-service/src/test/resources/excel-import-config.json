@@ -1,0 +1,142 @@
+{
+  "sheet": 0,
+  "beginRow": 3,
+  "endRow": 4,
+  "model": "com.rongji.egov.journal.service.model.Paper",
+  "values": {
+    "id": {
+      "expression": "regexp_replace(NEWID(), ?, ?)",
+      "value": [
+        "-",
+        ""
+      ]
+    },
+    "postalDisCode": {
+      "value": [
+        4
+      ]
+    },
+    "sortNo": {
+      "expression": "REPLACE(LEFT(?, instr(?, ?)),?,?) + RIGHT(REPLACE(?,?,?),5)",
+      "value": [
+        4,4,
+        "-",
+        "-",
+        "",
+        4,
+        "-",
+        "-00000"
+      ]
+    },
+    "publication": {
+      "value": [
+        7
+      ]
+    },
+    "journal": {
+      "value": [
+        6
+      ]
+    },
+    "lang": {
+      "value": [
+        13
+      ]
+    },
+    "paperType": {
+      "expression": "? + REGEXP_REPLACE(?, ?, ?) + ?",
+      "value": [
+        "[\"",
+        33,
+        "[\"\\\\]",
+        "",
+        "\"]"
+      ]
+    },
+    "periodical": {
+      "value": [
+        12
+      ]
+    },
+    "unitPrice": {
+      "value": [
+        24
+      ]
+    },
+    "yearPrice": {
+      "value": [
+        26
+      ]
+    },
+    "deliveryMethod": {
+      "value": [
+        15
+      ]
+    },
+    "barcode": {
+      "value": [
+        31
+      ]
+    },
+    "press": {
+      "value": [
+        32
+      ]
+    },
+    "phone": {
+      "value": [
+        ""
+      ]
+    },
+    "pressAddress": {
+      "value": [
+        ""
+      ]
+    },
+    "programa": {
+      "value": [
+        ""
+      ]
+    },
+    "presentation": {
+      "value": [
+        35
+      ]
+    },
+    "govExpense": {
+      "value": [
+        true
+      ]
+    },
+    "isValid": {
+      "value": [
+        true
+      ]
+    },
+    "requisite": {
+      "value": [
+        false
+      ]
+    },
+    "productId": {
+      "value": [
+        2
+      ]
+    },
+    "memo": {
+      "value": [
+        39
+      ]
+    },
+    "managers":{
+      "value": [
+        "[\"sys_manager\",\"journal_manager\"]"
+      ]
+    },
+    "readers": {
+      "value": [
+        "[\"*\"]"
+      ]
+    }
+  }
+}

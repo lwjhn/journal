@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.rongji.egov</groupId>
+        <artifactId>rjegov-journal</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>rjegov-journal-service</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>rjegov-journal-service</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oscar.driver</groupId>
+            <artifactId>oscarJDBC</artifactId>
+            <version>16.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- 可用configuration配置 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+        </dependency>
+        <!-- 忽略身份验证-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!-- 添加健康监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- 流水号服务调用 -->
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>number-client</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <!-- 应用安装接口调用 -->
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>app-support</artifactId>
+        </dependency>
+
+        <!-- 用户对外接口调用-->
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>user-client</artifactId>
+        </dependency>
+        <!--  数据库连接-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- 服务安全-->
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>security-service</artifactId>
+        </dependency>
+        <!--  服务间远程调用依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--        注册到注册中心依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--        开启服务链路跟踪-->
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>mybatis-simply-starter</artifactId>
+            <version>2.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>kingbase.jdbc</groupId>
+            <artifactId>kingbaseJDBC8.2</artifactId>
+            <version>8.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rongji.egov</groupId>
+            <artifactId>spring-multi-datasource-cloud-starter</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <!-- gitlab cli -->
+    <build>
+        <finalName>rjegov-journal-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

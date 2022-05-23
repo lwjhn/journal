@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "rongji.module.journal.excel-path",
+      "type": "java.lang.String",
+      "description": "Description for rongji.module.journal.excel-path.",
+      "defaultValue": "./temp"
+    }
+  ]
+}

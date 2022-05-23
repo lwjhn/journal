@@ -1,0 +1,113 @@
+{
+  "where": {
+    "expression": "(Subscription.subscribeYear=?) AND (Subscription.verifyStatus=2)",
+    "value": [
+      2021
+    ]
+  },
+  "model": "com.rongji.egov.journal.service.model.Subscription",
+  "tableAlias": "Subscription",
+  "join": [
+    {
+      "type": "LEFT",
+      "model": "com.rongji.egov.journal.service.model.Order",
+      "tableAlias": "Order",
+      "on": {
+        "expression": "Subscription.id = Order.pid"
+      },
+      "join": [
+        {
+          "type": "LEFT",
+          "model": "com.rongji.egov.journal.service.model.Paper",
+          "tableAlias": "Paper",
+          "on": {
+            "expression": "Order.paperId = Paper.id"
+          }
+        }
+      ]
+    },
+    {
+      "type": "LEFT",
+      "tableAlias": "OrderLimit",
+      "table": {
+        "fields": [
+          {
+            "expression": "company",
+            "alias": "company"
+          },
+          {
+            "expression": "max(sortNo)",
+            "alias": "sortNo"
+          }
+        ],
+        "model": "com.rongji.egov.journal.service.model.OrderLimit",
+        "group": {
+          "expression": "company"
+        }
+      },
+      "on": {
+        "expression": "OrderLimit.company = Subscription.subscribeOrg"
+      }
+    },
+    {
+      "type": "LEFT",
+      "tableAlias": "StatPrintConfig",
+      "model": "com.rongji.egov.journal.service.model.StatPrintConfig",
+      "on": {
+        "expression": "StatPrintConfig.company = CASE REGEXP_LIKE(Subscription.subscribeOrgNo, ?, ?) WHEN FALSE THEN Subscription.subscribeUser ELSE Subscription.subscribeOrg END",
+        "value": [
+          "^[a-z][0-9]{5,6}$",
+          "i"
+        ]
+      }
+    }
+  ],
+  "fields": [
+    {
+      "expression": "Paper.productId",
+      "alias": "item0"
+    },
+    {
+      "expression": "Paper.postalDisCode",
+      "alias": "item1"
+    },
+    {
+      "expression": "Paper.publication",
+      "alias": "item2"
+    },
+    {
+      "expression": "sum(Order.subscribeCopies)",
+      "alias": "item3"
+    },
+    {
+      "expression": "CASE REGEXP_LIKE(Subscription.subscribeOrgNo, ?, ?)        WHEN FALSE THEN Subscription.subscribeUser ELSE Subscription.subscribeOrg END",
+      "alias": "org",
+      "value": [
+        "^[a-z][0-9]{5,6}$",
+        "i"
+      ]
+    },
+    {
+      "expression": "MIN(StatPrintConfig.phoneNo)",
+      "alias": "item5"
+    },
+    {
+      "expression": "subscribeMonthBegin",
+      "alias": "subscribe_month_begin"
+    },
+    {
+      "expression": "subscribeMonthEnd",
+      "alias": "subscribe_month_end"
+    },
+    {
+      "expression": "MIN(StatPrintConfig.address)",
+      "alias": "address"
+    }
+  ],
+  "group": {
+    "expression": "Paper.productId, Paper.postalDisCode,Paper.publication, subscribeYear, subscribeMonthBegin, subscribeMonthEnd,Subscription.subscribeOrg, Subscription.subscribeOrgNo, Subscription.subscribeUser"
+  },
+  "order": {
+    "expression": "max(OrderLimit.sortNo) ASC, Subscription.subscribeOrg, max(Paper.sortNo) ASC"
+  }
+}
