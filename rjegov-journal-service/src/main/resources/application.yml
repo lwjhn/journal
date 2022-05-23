@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: test
   main:
     allow-bean-definition-overriding: true
   application:
@@ -97,7 +97,7 @@ spring:
     driver-class-name: com.kingbase8.Driver
     url: jdbc:kingbase8://192.168.210.80:54321/EGOV
     username: RJEGOV
-    password: 123456789
+    password: "123456789"
   datasource-multi-enable: false
   datasource-multi:
     NPSOA:
@@ -155,7 +155,7 @@ spring:
     driver-class-name: com.kingbase8.Driver
     url: jdbc:kingbase8://192.168.210.80:54321/EGOV
     username: RJEGOV
-    password: 123456789
+    password: "123456789"
   datasource-multi-enable: false
   datasource-multi:
     NPSOA:
