@@ -3,11 +3,12 @@ include:
     file: '/.gitlab-ci-module-be-template.yml'
 #    file: '/.gitlab-ci-module-be-join-template.yml'
 variables:
-  SSH_USERNAME: rjsoft
+  # 用户名
+  SSH_USERNAME: root
   # 密码
-  SSH_PASSWORD: rjsoft
+  SSH_PASSWORD: Rj@002474
   # 主机
-  SSH_HOST: 192.168.210.129
+  SSH_HOST: 192.168.0.86
   # 端口
   SSH_PORT: 22
   # 运行模块
