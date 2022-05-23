@@ -140,7 +140,7 @@ logging:
   level:
     com.rongji.egov: debug
 server:
-  port: 3686
+  port: 7908
 rongji:
   module:
     journal:
@@ -171,4 +171,4 @@ logging:
   level:
     com.rongji.egov: debug
 server:
-  port: 3686
+  port: 7908
