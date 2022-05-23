@@ -39,7 +39,7 @@ public class ImportExcelController {
 
     public Acl checkAuthor() {
         Acl acl = modelLoader.getAcl();
-        if (SQLVerifier.requireNonEmpty(acl.getRoleNoList()) || SQLVerifier.requireNonEmpty(acl.getRoleNoList())) {
+        if (SQLVerifier.requireEmpty(acl.getRoleNoList())) {
             throw new RuntimeException("no authority .");
         }
         return acl;
