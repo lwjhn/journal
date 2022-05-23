@@ -7,33 +7,37 @@ import com.rongji.egov.mybatis.base.annotation.ModelScan;
 import com.rongji.egov.mybatis.base.wrapper.IterableTypeHandler;
 import com.rongji.egov.security.service.SecurityServiceConfiguration;
 import com.rongji.egov.user.client.UserClientConfiguration;
+import com.rongji.egov.utils.spring.configuration.AmqpConfiguration;
 import com.rongji.egov.utils.spring.configuration.ClientConfiguration;
 import com.rongji.egov.utils.spring.configuration.IgnoredPathsConfiguration;
 import com.rongji.egov.utils.spring.configuration.WebConfiguration;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @ModelScan(basePackageClasses = Subscription.class)
 @EnableConfigurationProperties(ModuleProperties.class)
+@EnableDiscoveryClient
 @SpringBootApplication
-@EnableEurekaClient
 @EnableTransactionManagement
-@Import({WebConfiguration.class,
+@Import({
+        WebConfiguration.class,
         SecurityServiceConfiguration.class,
         ClientConfiguration.class,
         UserClientConfiguration.class,
         AppSupportConfiguration.class,
         IgnoredPathsConfiguration.class
 })
+@EnableRabbit
 public class JournalServiceConfiguration {
     public static void main(String[] args) {
         SpringApplication.run(JournalServiceConfiguration.class, args);
