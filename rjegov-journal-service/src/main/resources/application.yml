@@ -1,8 +1,8 @@
 spring:
   profiles:
-    active: test
-  main:
-    allow-bean-definition-overriding: true
+    active: dev
+  config:
+    location: http://192.168.0.42/zhuanglw/env-resources/raw/master/env-resources/src/main/resources/test/application.sec
   application:
     name: journal
   servlet:
@@ -10,71 +10,6 @@ spring:
       enabled: true
       max-file-size: 10MB
       max-request-size: 100MB
-  jackson:
-    time-zone: GMT+8
-  #    date-format: yyyy-MM-dd HH:mm:ss
-  cloud:
-    stream:
-      binders:
-        rabbit:
-          type: rabbit
-      bindings:
-        request-enum:
-          destination: request.enum
-          binder: rabbit
-          group: ${spring.application.name}
-        receive-enum:
-          destination: receive.enum
-          binder: rabbit
-  rabbitmq:
-    host: 192.168.0.40
-    port: 5672
-    username: guest
-    password: guest
-  zipkin:
-    sender:
-      type: rabbit
-    sleuth:
-      web:
-        client:
-          enabled: true
-      sampler:
-        probability: 0.5
-  cache:
-    type: redis
-    #mongoDb:存mongoDb ; dataBase: 存数据库
-    fileStorageType: mongoDb
-feign:
-  client:
-    config:
-      feignName:
-        connectTimeout: 60000
-        readTimeout: 60000
-ribbon:
-  ReadTimeout: 60000
-  SocketTimeout: 60000
-  ServerListRefreshInterval: 5000 # ribbon拉取服务时间间隔
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
-eureka:
-  instance:
-    instance-id: ${spring.cloud.client.ip-address}:${server.port}
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
-    prefer-ip-address: true
-    metadata-map:
-      displayName: 报刊征订(journal)
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-  client:
-    registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: http://192.168.210.129:2001/eureka/ #SZF
 server:
   max-http-header-size: 256KB
 rongji:
@@ -90,57 +25,21 @@ rongji:
 ---
 spring:
   profiles: dev
-  main:
-    allow-bean-definition-overriding: true
-  datasource:
-    aliases: default
-    driver-class-name: com.kingbase8.Driver
-    url: jdbc:kingbase8://192.168.210.80:54321/EGOV
-    username: RJEGOV
-    password: "123456789"
-  datasource-multi-enable: false
-  datasource-multi:
-    NPSOA:
-      driver-class-name: com.oscar.Driver
-      url: jdbc:oscar://192.168.210.134:2003/OSRDB
-      username: FJSZF
-      password: FJSZF
-    XCOA:
-      aliases: SFTOA, NPSWB
-      type: com.alibaba.druid.pool.DruidDataSource
-      driver-class-name: dm.jdbc.driver.DmDriver
-      url: jdbc:dm://192.168.210.77:5236
-      username: SFTOA
-      password: "123456789"
-    FJSNYNCT: #test:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://192.168.210.153:3399/xc_demo?connectTimeout=3000&socketTimeout=60000&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      username: rjsoft
-      password: abcd1234
-  redis:
-    host: 192.168.210.153
-    password: 4A027FD3C83E1451482582DE000A9A88
-    port: 6379
-    database: 0
-eureka:
-  client:
-    service-url:
-      defaultZone: http://192.168.0.47:2001/eureka/
-  instance:
-    metadata-map:
-      appProvider: true
-      #      private: true
+#  datasource-multi-mapper-pointcut: execution(* com.rongji.egov.mybatis.base.mapper.*Mapper.*(..))
+  datasource-multi-enable: true
+#  datasource-multi-default-holder: ROOT
+#eureka:
+#  instance:
+#    metadata-map:
+#      appProvider: true
+#      #      private: true
 #      zone: lwjhn-dev # 区域名 随便起一个，不要直接在这复制
 #      invisible: DIFF_ZONE # 不同区域间的服务不可见（仅本区域可见）
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-mybatis:
-  configuration:
-    database-id: shentong
 logging:
   level:
     com.rongji.egov: debug
 server:
-  port: 7908
+  port: 7909
 rongji:
   module:
     journal:
@@ -148,63 +47,5 @@ rongji:
 ---
 spring:
   profiles: test
-  main:
-    allow-bean-definition-overriding: true
-#  datasource:
-#    aliases: default
-#    driver-class-name: com.kingbase8.Driver
-#    url: jdbc:kingbase8://192.168.210.80:54321/EGOV
-#    username: RJEGOV
-#    password: "123456789"
-  datasource-multi-enable: true
-#  datasource-multi:
-#    XCOA:
-#      type: com.alibaba.druid.pool.DruidDataSource
-#      driver-class-name: com.oscar.Driver
-#      url: jdbc:oscar://192.168.210.134:2003/OSRDB
-#      username: FJSZF
-#      password: FJSZF
-#    NPSOA:
-#      aliases: SFTOA, NPSWB
-#      driver-class-name: dm.jdbc.driver.DmDriver
-#      url: jdbc:dm://192.168.210.77:5236
-#      username: SFTOA
-#      password: "123456789"
-#    FJSNYNCT: #test:
-#      driver-class-name: com.mysql.cj.jdbc.Driver
-#      url: jdbc:mysql://192.168.210.153:3399/xc_demo?connectTimeout=3000&socketTimeout=60000&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-#      username: rjsoft
-#      password: abcd1234
-  redis:
-    host: 192.168.210.78
-    port: 6379
-    database: 2
-    password: qwer1234
-  rabbitmq:
-    host: 192.168.0.40
-    username: guest
-    password: guest
-    port: 5672
-eureka:
-  client:
-    service-url:
-      defaultZone: http://192.168.0.86:2001/eureka/
-  instance:
-    metadata-map:
-      appProvider: true
-      #      private: true
-      #      zone: lwjhn-dev # 区域名 随便起一个，不要直接在这复制
-      #      invisible: DIFF_ZONE # 不同区域间的服务不可见（仅本区域可见）
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-mybatis:
-  configuration:
-    database-id: shentong
-logging:
-  level:
-    com.rongji.egov: debug
 server:
   port: 7908
-rongji:
-  module:
-    journal:
-      excel-path: /temp
