@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   config:
-    location: http://192.168.0.42/zhuanglw/env-resources/raw/master/env-resources/src/main/resources/test/application.sec
+    location: http://192.168.0.42/zhuanglw/config/raw/master/rjegov80/common.sec
   application:
     name: journal
   servlet:
