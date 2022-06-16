@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: default
   config:
     location: http://192.168.0.42/zhuanglw/config/raw/master/rjegov80/common.sec
   application:
@@ -40,12 +40,10 @@ logging:
     com.rongji.egov: debug
 server:
   port: 7909
-rongji:
-  module:
-    journal:
-      excel-path: /temp
 ---
 spring:
   profiles: test
+  config:
+    location: file:///../common.sec
 server:
   port: 7908

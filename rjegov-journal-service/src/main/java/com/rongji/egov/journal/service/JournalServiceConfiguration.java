@@ -7,7 +7,6 @@ import com.rongji.egov.mybatis.base.annotation.ModelScan;
 import com.rongji.egov.mybatis.base.wrapper.IterableTypeHandler;
 import com.rongji.egov.security.service.SecurityServiceConfiguration;
 import com.rongji.egov.user.client.UserClientConfiguration;
-import com.rongji.egov.utils.spring.configuration.AmqpConfiguration;
 import com.rongji.egov.utils.spring.configuration.ClientConfiguration;
 import com.rongji.egov.utils.spring.configuration.IgnoredPathsConfiguration;
 import com.rongji.egov.utils.spring.configuration.WebConfiguration;
