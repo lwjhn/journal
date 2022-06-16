@@ -44,6 +44,6 @@ server:
 spring:
   profiles: test
   config:
-    location: file:///../common.sec
+    location: ../common.sec
 server:
   port: 7908
