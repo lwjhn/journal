@@ -1,17 +1,10 @@
 spring:
   profiles:
-    active: default
+    active: dev
   config:
     location: http://192.168.0.42/zhuanglw/config/raw/master/rjegov80/common.sec
   application:
     name: journal
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 10MB
-      max-request-size: 100MB
-server:
-  max-http-header-size: 256KB
 rongji:
   module:
     journal:
